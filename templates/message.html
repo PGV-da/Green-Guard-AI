@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Flask Chat</title>
+    <style>
+        .chat-image {
+            width: 150px;
+            height: 150px;
+        }
+    </style>
+</head>
+<body>
+    <h1>Chat</h1>
+    <div id="messages">
+        {% for message in messages %}
+            <p><strong>{{ message[1] }}:</strong> {{ message[2] }}</p>
+            {% if message[3] %}
+                <img class="chat-image" src="data:image/png;base64,{{ message[3] }}" alt="Image">
+            {% endif %}
+        {% endfor %}
+    </div>
+    
+    <form action="{{ url_for('send_message') }}" method="post" enctype="multipart/form-data">
+        <textarea name="message" placeholder="Message"></textarea><br>
+        <input type="file" name="image"><br>
+        <input type="submit" value="Send">
+    </form>
+</body>
+</html>

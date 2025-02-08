@@ -1,0 +1,494 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1, shrink-to-fit=no"
+    />
+    <meta name="description" content="" />
+    <meta name="author" content="" />
+
+    <title>Green Guardian</title>
+
+    <!-- Custom fonts for this template-->
+<link href="{{ url_for('static', filename='vendor/fontawesome-free/css/all.min.css') }}" rel="stylesheet" type="text/css" />
+
+<!-- Custom styles for this template-->
+<link href="{{ url_for('static', filename='css/gg.css') }}" rel="stylesheet" />
+
+
+  <body id="page-top">
+    <!-- Page Wrapper -->
+    <div id="wrapper">
+      <!-- Sidebar -->
+      <ul
+        class="navbar-nav bg-gradient-info sidebar sidebar-dark accordion"
+        id="accordionSidebar"
+      >
+        <!-- Sidebar - Brand -->
+        <br />
+        <a
+          class="sidebar-brand d-flex align-items-center justify-content-center"
+          href="{{ url_for('index') }}"
+        >
+          <div class="sidebar-brand-icon rotate-n-15">
+            <i class="fas fa-seedling"></i>
+          </div>
+          <div class="sidebar-brand-text mx-3">Green Guardian</div>
+        </a>
+        <br />
+        <!-- Divider -->
+        <hr class="sidebar-divider my-0" />
+
+        <!-- Nav Item - Dashboard -->
+
+        <!-- Divider -->
+        <hr class="sidebar-divider" />
+
+        <!-- Heading -->
+        <div class="sidebar-heading">Plant</div>
+
+        <!-- Nav Item - Pages Collapse Menu -->
+        <li class="nav-item">
+          <a
+            class="nav-link collapsed"
+            href="#"
+            data-toggle="collapse"
+            data-target="#collapseTwo"
+            aria-expanded="true"
+            aria-controls="collapseTwo"
+          >
+            <i class="fas fa-fw fa-leaf"></i>
+            <span>Garden</span>
+          </a>
+          <div
+            id="collapseTwo"
+            class="collapse"
+            aria-labelledby="headingTwo"
+            data-parent="#accordionSidebar"
+          >
+            <div class="bg-white py-2 collapse-inner rounded">
+              <h6 class="collapse-header">Components:</h6>
+              <a class="collapse-item" href="{{ url_for('mycrop') }}">My Crops</a>
+            </div>
+          </div>
+        </li>
+
+        <!-- Nav Item - Utilities Collapse Menu -->
+        <li class="nav-item">
+          <a
+            class="nav-link collapsed"
+            href="#"
+            data-toggle="collapse"
+            data-target="#collapseUtilities"
+            aria-expanded="true"
+            aria-controls="collapseUtilities"
+          >
+            <i class="fas fa-clock"></i>
+            <span>Forecasting</span>
+          </a>
+          <div
+            id="collapseUtilities"
+            class="collapse"
+            aria-labelledby="headingUtilities"
+            data-parent="#accordionSidebar"
+          >
+            <div class="bg-white py-2 collapse-inner rounded">
+              <h6 class="collapse-header">Menu:</h6>
+              <a class="collapse-item" href="{{ url_for('price') }}">Commodity prices</a>
+              <a class="collapse-item" href="{{ url_for('currentweather') }}"
+                >Current Weather</a
+              >
+              <a class="collapse-item" href="{{ url_for('upcomingweather') }}"
+                >Upcoming Weather</a
+              >
+              <a class="collapse-item" href="{{ url_for('news') }}">News Updates</a>
+            </div>
+          </div>
+        </li>
+
+        <li class="nav-item">
+          <a
+            class="nav-link collapsed"
+            href="#"
+            data-toggle="collapse"
+            data-target="#collapsePages"
+            aria-expanded="true"
+            aria-controls="collapsePages"
+          >
+            <i class="fas fa-brain"></i>
+            <span>AI</span>
+          </a>
+          <div
+            id="collapsePages"
+            class="collapse"
+            aria-labelledby="headingPages"
+            data-parent="#accordionSidebar"
+          >
+            <div class="bg-white py-2 collapse-inner rounded">
+              <h6 class="collapse-header">Options:</h6>
+              <a class="collapse-item" href="{{ url_for('diseasedetection') }}"
+                >Disease Detection</a
+              >
+              <a class="collapse-item" href="{{ url_for('cropprediction') }}"
+                >Crop Prediction</a
+              >
+              <a class="collapse-item" href="{{ url_for('fertilizerrecommendation') }}"
+                >Fertilizer Recommendation</a
+              >
+              <a class="collapse-item" href="{{ url_for('priceprediction') }}"
+                >Price Prediction</a
+              >
+              <a class="collapse-item" href="{{ url_for('chatassistant') }}"
+                >Chat Assistant</a
+              >
+            </div>
+          </div>
+        </li>
+
+        <!-- Divider -->
+        <hr class="sidebar-divider" />
+
+        <!-- Heading -->
+        <div class="sidebar-heading">Connect</div>
+
+        <!-- Nav Item - Pages Collapse Menu -->
+
+        <!-- Nav Item - Charts -->
+        <li class="nav-item">
+          <a class="nav-link" href="{{ url_for('community') }}">
+            <i class="fas fa-fw fa-users"></i>
+            <span>Community</span>
+          </a>
+        </li>
+        <hr class="sidebar-divider d-none d-md-block" />
+        <div class="sidebar-heading">Others</div>
+
+        <!-- Nav Item - Tables -->
+
+        <li class="nav-item">
+          <a class="nav-link" href="{{ url_for('aboutus') }}">
+            <i class="fas fa-info-circle"></i>
+            <span>About us</span></a
+          >
+        </li>
+        <!-- Divider -->
+        <hr class="sidebar-divider d-none d-md-block" />
+
+        <!-- Sidebar Toggler (Sidebar) -->
+        <div class="text-center d-none d-md-inline">
+          <button class="rounded-circle border-0" id="sidebarToggle"></button>
+        </div>
+      </ul>
+      <!-- End of Sidebar -->
+
+      <!-- Content Wrapper -->
+      <div id="content-wrapper" class="d-flex flex-column">
+        <!-- Main Content -->
+        <div id="content">
+          <!-- Topbar -->
+          <nav
+            class="navbar navbar-expand navbar-light bg-white topbar mb-4 static-top shadow"
+          >
+            <!-- Sidebar Toggle (Topbar) -->
+            <button
+              id="sidebarToggleTop"
+              class="btn btn-link d-md-none rounded-circle mr-3"
+            >
+              <i class="fa fa-bars"></i>
+            </button>
+
+            <!-- Topbar Search -->
+            <form
+              class="d-none d-sm-inline-block form-inline mr-auto ml-md-3 my-2 my-md-0 mw-100 navbar-search"
+            >
+              <div class="input-group">
+                <input
+                  type="text"
+                  class="form-control bg-light border-0 small"
+                  placeholder="Search for..."
+                  aria-label="Search"
+                  aria-describedby="basic-addon2"
+                />
+                <div class="input-group-append">
+                  <button class="btn btn-info" type="button">
+                    <i class="fas fa-search fa-sm"></i>
+                  </button>
+                </div>
+              </div>
+            </form>
+
+            <!-- Topbar Navbar -->
+            <ul class="navbar-nav ml-auto">
+              <!-- Nav Item - Search Dropdown (Visible Only XS) -->
+              <li class="nav-item dropdown no-arrow d-sm-none">
+                <a
+                  class="nav-link dropdown-toggle"
+                  href="#"
+                  id="searchDropdown"
+                  role="button"
+                  data-toggle="dropdown"
+                  aria-haspopup="true"
+                  aria-expanded="false"
+                >
+                  <i class="fas fa-search fa-fw"></i>
+                </a>
+                <!-- Dropdown - Messages -->
+                <div
+                  class="dropdown-menu dropdown-menu-right p-3 shadow animated--grow-in"
+                  aria-labelledby="searchDropdown"
+                >
+                  <form class="form-inline mr-auto w-100 navbar-search">
+                    <div class="input-group">
+                      <input
+                        type="text"
+                        class="form-control bg-light border-0 small"
+                        placeholder="Search for..."
+                        aria-label="Search"
+                        aria-describedby="basic-addon2"
+                      />
+                      <div class="input-group-append">
+                        <button class="btn btn-primary" type="button">
+                          <i class="fas fa-search fa-sm"></i>
+                        </button>
+                      </div>
+                    </div>
+                  </form>
+                </div>
+              </li>
+
+              <!-- Nav Item - Alerts -->
+              <li class="nav-item dropdown no-arrow mx-1">
+                <a
+                  class="nav-link dropdown-toggle"
+                  href="#"
+                  id="alertsDropdown"
+                  role="button"
+                  data-toggle="dropdown"
+                  aria-haspopup="true"
+                  aria-expanded="false"
+                >
+                  <i class="fas fa-bell fa-fw"></i>
+                  <!-- Counter - Alerts -->
+                </a>
+                <!-- Dropdown - Alerts -->
+                <div
+                  class="dropdown-list dropdown-menu dropdown-menu-right shadow animated--grow-in"
+                  aria-labelledby="alertsDropdown"
+                >
+                  <h6 class="dropdown-header">Alerts</h6>
+
+                  <a
+                    class="dropdown-item text-center small text-gray-500"
+                    href="#"
+                    >Show All Alerts</a
+                  >
+                </div>
+              </li>
+
+              <div class="topbar-divider d-none d-sm-block"></div>
+
+              <!-- Nav Item - User Information -->
+              <li class="nav-item dropdown no-arrow">
+                <a
+                  class="nav-link dropdown-toggle"
+                  href="#"
+                  id="userDropdown"
+                  role="button"
+                  data-toggle="dropdown"
+                  aria-haspopup="true"
+                  aria-expanded="false"
+                >
+                  <span
+                    class="mr-2 d-none d-lg-inline text-gray-600 small"
+                  ></span>
+                  <i class="fas fa-bars"></i>
+                  <!-- Three-line icon -->
+                </a>
+                <!-- Dropdown - User Information -->
+                <div
+                  class="dropdown-menu dropdown-menu-right shadow animated--grow-in"
+                  aria-labelledby="userDropdown"
+                >
+                  <a class="dropdown-item" href="#">
+                    <i class="fas fa-cogs fa-sm fa-fw mr-2 text-gray-400"></i>
+                    Settings
+                  </a>
+                  <div class="dropdown-divider"></div>
+                  <a
+                    class="dropdown-item"
+                    href="#"
+                    data-toggle="modal"
+                    data-target="#logoutModal"
+                  >
+                    <i
+                      class="fas fa-sign-out-alt fa-sm fa-fw mr-2 text-gray-400"
+                    ></i>
+                    Logout
+                  </a>
+                </div>
+              </li>
+            </ul>
+          </nav>
+          <!-- End of Topbar -->
+
+          <!-- Begin Page Content -->
+          <div class="container-fluid text-gray-900">
+            <!-- Page Heading -->
+            <h1 class="h1 mb-4 text-center">About Us</h1>
+            <p>
+              Welcome to Green Guardian, your ultimate resource for sustainable
+              living! We are a passionate team of students dedicated to creating
+              a greener future.
+            </p>
+            <p>
+              At Green Guardian, we strive to provide you with valuable
+              information, tips, and resources to help you live a more
+              eco-friendly lifestyle. From gardening and composting to
+              energy-saving tips and sustainable product recommendations, we've
+              got you covered.
+            </p>
+            <p>
+              Join us on our journey towards a more sustainable world. Together,
+              we can make a difference, one green choice at a time!
+            </p>
+            <hr class="my-4" />
+            <p>
+              We're here to innovate, learn, and create something remarkable
+              together.
+            </p>
+            <p>Here are some key points about us:</p>
+            <ul>
+              <li>
+                Our team is driven by a passion for innovation and excellence.
+              </li>
+              <li>
+                We are committed to delivering a work that exceeds expectations.
+              </li>
+              <li>
+                Creativity and problem-solving are at the core of our approach.
+              </li>
+              <li>We believe in the strength of collaboration and teamwork.</li>
+            </ul>
+            <hr class="my-4" />
+            <p>
+              Feel free to explore our website to learn more about our work. If
+              you have any questions or feedback, please don't hesitate to
+              contact us using the form below:
+            </p>
+
+            <!-- Contact Form -->
+            <div class="contact-form d-flex justify-content-center">
+              <form action="submit_contact_form.php" method="post" class="w-50">
+                <div class="form-group">
+                  <label for="name">Name:</label>
+                  <input
+                    type="text"
+                    class="form-control"
+                    id="name"
+                    name="name"
+                    required
+                  />
+                </div>
+                <div class="form-group">
+                  <label for="email">Email:</label>
+                  <input
+                    type="email"
+                    class="form-control"
+                    id="email"
+                    name="email"
+                    required
+                  />
+                </div>
+                <div class="form-group">
+                  <label for="subject">Subject:</label>
+                  <input
+                    type="text"
+                    class="form-control"
+                    id="subject"
+                    name="subject"
+                    required
+                  />
+                </div>
+                <div class="form-group">
+                  <label for="message">Message:</label>
+                  <textarea
+                    class="form-control"
+                    id="message"
+                    name="message"
+                    rows="5"
+                    required
+                  ></textarea>
+                </div>
+                <div class="col-md-12 text-center">
+                  <button type="submit" class="btn btn-info">Submit</button>
+                </div>
+              </form>
+            </div>
+          </div>
+          <!-- /.container-fluid -->
+        </div>
+        <!-- End of Main Content -->
+
+        <!-- Footer -->
+
+        <!-- End of Footer -->
+      </div>
+      <!-- End of Content Wrapper -->
+    </div>
+    <!-- End of Page Wrapper -->
+
+    <!-- Scroll to Top Button-->
+    <a class="scroll-to-top rounded" href="#page-top">
+      <i class="fas fa-angle-up"></i>
+    </a>
+
+    <!-- Logout Modal-->
+    <div
+      class="modal fade"
+      id="logoutModal"
+      tabindex="-1"
+      role="dialog"
+      aria-labelledby="exampleModalLabel"
+      aria-hidden="true"
+    >
+      <div class="modal-dialog" role="document">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title" id="exampleModalLabel">Ready to Leave?</h5>
+            <button
+              class="close"
+              type="button"
+              data-dismiss="modal"
+              aria-label="Close"
+            >
+              <span aria-hidden="true">×</span>
+            </button>
+          </div>
+          <div class="modal-body">
+            Select "Logout" below if you are ready to end your current session.
+          </div>
+          <div class="modal-footer">
+            <button
+              class="btn btn-secondary"
+              type="button"
+              data-dismiss="modal"
+            >
+              Cancel
+            </button>
+            <a class="btn btn-primary" href="/">Logout</a>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Bootstrap core JavaScript-->
+    <script src="{{ url_for('static', filename='vendor/jquery/jquery.min.js') }}"></script>
+<script src="{{ url_for('static', filename='vendor/bootstrap/js/bootstrap.bundle.min.js') }}"></script>
+<script src="{{ url_for('static', filename='vendor/jquery-easing/jquery.easing.min.js') }}"></script>
+<script src="{{ url_for('static', filename='js/gg.min.js') }}"></script>
+
+  </body>
+</html>
