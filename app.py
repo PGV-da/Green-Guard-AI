@@ -1,51 +1,33 @@
+from flask import Flask
 from config import config
-
-
-import base64
-import csv
-import os
-import random
-import sqlite3
-from functools import wraps
-
-import bcrypt
-import numpy as np
-import pandas as pd
-import requests
-from bs4 import BeautifulSoup
-from flask import (Flask, flash, jsonify, redirect, render_template, request,
-                   session, url_for)
-from sklearn.ensemble import RandomForestClassifier
-from sklearn.model_selection import train_test_split
-from statsmodels.tsa.arima.model import ARIMA
-from tensorflow.keras.models import load_model
-from tensorflow.keras.preprocessing.image import img_to_array, load_img
-
-from disease import disease_data
-from fertilizer import fertilizer_dic
+from utils.database import create_tables
+from routes.auth_routes import auth_bp
+from routes.crop_routes import crop_bp
+from routes.disease_routes import disease_bp
+from routes.community_routes import community_bp
+from routes.weather_routes import weather_bp
+from routes.price_routes import price_bp
+from routes.fertilizer_routes import fertilizer_bp
+from routes.news_routes import news_bp
+from routes.chat_routes import chat_bp
 
 app = Flask(__name__)
 app.secret_key = config.SECRET_KEY
+app.config['UPLOAD_FOLDER'] = config.UPLOAD_FOLDER
 
-@app.route('/index')
-def index():
-    return render_template('index.html')
+# Create database tables if they don’t exist
+create_tables()
 
-@app.route('/mycrop')
-@require_login
-def mycrop():
-    return render_template('mycrop.html')
-
-
-@app.route('/chatassistant')
-@require_login
-def chatassistant():
-    return render_template('chat-assistant.html')
-
-@app.route('/aboutus')
-@require_login
-def aboutus():
-    return render_template('about-us.html')
+# Register Blueprints (modularized routes)
+app.register_blueprint(auth_bp)
+app.register_blueprint(crop_bp)
+app.register_blueprint(disease_bp)
+app.register_blueprint(community_bp)
+app.register_blueprint(weather_bp)
+app.register_blueprint(price_bp)
+app.register_blueprint(fertilizer_bp)
+app.register_blueprint(news_bp)
+app.register_blueprint(chat_bp)
 
 
 if __name__ == '__main__':

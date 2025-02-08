@@ -92,3 +92,8 @@ def chat():
     user_input = request.json.get('message')
     response = assistant.handle_user_input(user_input)
     return jsonify({'message': response})
+
+@chat_bp.route('/chatassistant')
+@require_login
+def chatassistant():
+    return render_template('chat-assistant.html')
