@@ -45,20 +45,6 @@ def index():
 def mycrop():
     return render_template('mycrop.html')
 
-@app.route('/price')
-@require_login
-def price():
-    return render_template('price.html')
-
-@app.route('/currentweather')
-@require_login
-def currentweather():
-    return render_template('currentweather.html')
-
-@app.route('/upcomingweather')
-@require_login
-def upcomingweather():
-    return render_template('upcomingweather.html')
 
 
 @app.route('/news')
@@ -78,12 +64,6 @@ def news():
     return render_template('news.html', news_articles=news_articles)
 
 
-def fetch_weather_data(lat, lon):
-    api_key = '465ad6304f12419481b476deed2c4188'
-    url = f'http://api.openweathermap.org/data/2.5/weather?lat={lat}&lon={lon}&appid={api_key}'
-    response = requests.get(url)
-    if response.status_code == 200:
-        return response.json()
 @app.route('/fertilizer-recommendation')
 @require_login
 def fertilizerrecommendation():
@@ -157,42 +137,6 @@ def recommend():
                 return render_template('fertilizer-recommendation.html', fertilizer=recommendation)
 
     return render_template('fertilizer-recommendation.html', fertilizer='No recommendation found')
-@app.route('/forecast', methods=['GET'])
-@require_login
-def forecast():
-    # Get the selected crop from the query parameters
-    selected_crop = request.args.get('crop')
-
-    # Load the data from CSV based on the selected crop
-    data = pd.read_csv(f'data/{selected_crop}.csv', header=None, names=['Date', 'Value'])
-
-    # Convert 'Date' column to datetime
-    data['Date'] = pd.to_datetime(data['Date'], format='%Y-%m')
-
-    # Set 'Date' column as index
-    data.set_index('Date', inplace=True)
-
-    # Fit ARIMA model
-    model = ARIMA(data['Value'], order=(1,1,1))  # Example order, you might need to adjust
-    fit_model = model.fit()
-
-    # Forecast
-    forecast = fit_model.forecast(steps=4)  # Example forecast for next 4 periods
-
-    # Prepare data for Plotly
-    forecast_dates = pd.date_range(start=data.index[-1], periods=5, freq='M')[1:]
-    forecast_dates_str = forecast_dates.strftime('%Y-%m-%d').tolist()
-    forecast_values = forecast.tolist()
-
-    # Convert the Plotly figure to JSON
-    plot_data = {'index': forecast_dates_str, 'values': forecast_values}
-
-    return jsonify(plot_data)
-
-@app.route('/priceprediction')
-@require_login
-def priceprediction():
-    return render_template('price-prediction.html')
 
 @app.route('/chatassistant')
 @require_login
