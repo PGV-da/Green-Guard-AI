@@ -36,37 +36,7 @@ def b64encode_image(image):
 # Register the filter with Jinja2
 app.jinja_env.filters['b64encode_image'] = b64encode_image
 
-
-# Load the dataset
-data = pd.read_csv('data/crop_data.csv')
-
-
-
-# Select relevant columns for modeling
-X = data[['N', 'P', 'K', 'Zn', 'Mg', 'S', 'pH', 'Rainfall', 'Temperature', 'Humidity']]
-y = data['Crop_Subcategory']
-
-# Split the data into training and testing sets
-X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.2, random_state=42)
-
-# Train the Random Forest model
-rf_model = RandomForestClassifier(n_estimators=100, random_state=42)
-rf_model.fit(X_train, y_train)
-
-def recommend_crop(attributes):
-    attribute_values = [list(attributes.values())]
-    crop = rf_model.predict(attribute_values)[0]
-    return crop
 model = load_model('Mobile_net_plant_disease_model.h5')
-
-def require_login(view):
-    @wraps(view)
-    def wrapped_view(**kwargs):
-        if 'email' not in session:
-            flash('You must be logged in to access this page', 'error')
-            return redirect(url_for('login'))
-        return view(**kwargs)
-    return wrapped_view
 
 
 class_indices = {
@@ -143,124 +113,6 @@ def predict_and_visualize(image_path):
     predicted_class = class_indices[predicted_class_index]
     confidence = prediction[predicted_class_index]
     return predicted_class, confidence
-
-
-@app.route('/register', methods=['GET', 'POST'])
-def register():
-    if request.method == 'POST':
-        first_name = request.form['first_name']
-        last_name = request.form['last_name']
-        phone_number = request.form['phone_number']
-        email = request.form['email']
-        password = request.form['password']
-        repeat_password = request.form['repeat_password']
-
-        if not (first_name and last_name and email and password and repeat_password):
-            flash('All fields are required', 'error')
-            return render_template('register.html')
-
-        if password != repeat_password:
-            flash('Passwords do not match', 'error')
-            return render_template('register.html')
-
-        # Hash the password before storing
-        hashed_password = bcrypt.hashpw(password.encode('utf-8'), bcrypt.gensalt()).decode('utf-8')
-
-        conn = sqlite3.connect(DATABASE)
-        cursor = conn.cursor()
-
-        try:
-            # Check if the email already exists
-            cursor.execute('SELECT * FROM users WHERE email = ?', (email,))
-            existing_user = cursor.fetchone()
-            if existing_user:
-                flash('Email already exists', 'error')
-                return render_template('register.html')
-
-            # Insert the new user into the database
-            cursor.execute('INSERT INTO users (first_name, last_name, phone_number, email, password) VALUES (?, ?, ?, ?, ?)',
-                           (first_name, last_name, phone_number, email, hashed_password))
-            conn.commit()
-            flash('Account created successfully', 'success')
-            return redirect(url_for('login'))
-
-        except sqlite3.Error as e:
-            flash('An error occurred while registering. Please try again.', 'error')
-            print("Error:", e)
-
-        finally:
-            conn.close()
-
-    return render_template('register.html')
-
-@app.route('/', methods=['GET', 'POST'])
-def login():
-    if request.method == 'POST':
-        email = request.form['email']
-        password = request.form['password']
-
-        if not (email and password):
-            flash('Email and password are required', 'error')
-            return render_template('login.html')
-
-        conn = sqlite3.connect(DATABASE)
-        cursor = conn.cursor()
-
-        # Check if user exists
-        cursor.execute('SELECT * FROM users WHERE email = ?', (email,))
-        user = cursor.fetchone()
-
-        conn.close()
-
-        if user and bcrypt.checkpw(password.encode('utf-8'), user[5].encode('utf-8')):
-            session['email'] = email
-            print("Login successful")
-            # Redirect to some page after successful login
-            return redirect(url_for('index'))
-        else:
-            flash('Invalid email or password', 'error')
-            return render_template('login.html')
-
-    return render_template('login.html')
-
-@app.route('/community')
-@require_login
-def community():
-    conn = sqlite3.connect(DATABASE)
-    cursor = conn.cursor()
-    cursor.execute('SELECT * FROM messages')
-    messages = cursor.fetchall()
-    conn.close()
-    return render_template('community.html', messages=messages)
-@require_login
-@app.route('/send_message', methods=['POST'])
-def send_message():
-    if 'email' not in session:
-        flash('You must be logged in to send a message', 'error')
-        return redirect(url_for('login'))
-
-    user_email = session['email']
-    message_text = request.form['message']
-    message_image = request.files['image'] if 'image' in request.files else None
-
-    conn = sqlite3.connect(DATABASE)
-    cursor = conn.cursor()
-
-    cursor.execute('SELECT first_name FROM users WHERE email = ?', (user_email,))
-    user_id = cursor.fetchone()[0]
-
-    if message_image:
-        image_blob = message_image.read()
-        # Encode image data as Base64
-        image_base64 = base64.b64encode(image_blob).decode('utf-8')
-        cursor.execute('INSERT INTO messages (user_id, message, image) VALUES (?, ?, ?)',
-                   (user_id, message_text, image_base64))
-    else:
-        cursor.execute('INSERT INTO messages (user_id, message) VALUES (?, ?)',
-                   (user_id, message_text))
-    conn.commit()
-    conn.close()
-    return redirect(url_for('community'))
 
 
 @app.route('/predict', methods=['POST'])
@@ -344,47 +196,6 @@ def news():
 @require_login
 def diseasedetection():
     return render_template('disease-detection.html')
-
-@app.route('/cropprediction', methods=['GET', 'POST'])
-@require_login
-def cropprediction():
-    recommended_crop = None
-
-    if request.method == 'POST':
-        lat = request.form['lat']
-        lon = request.form['lon']
-        # Fetch weather data from OpenWeather API
-        weather_data = fetch_weather_data(lat, lon)
-
-        # Use default values if data is not available
-        temperature = weather_data.get('main', {}).get('temp')
-        rainfall = weather_data.get('rain', {}).get('1h')
-        humidity = weather_data.get('main', {}).get('humidity')
-
-        # Check if temperature, rainfall, and humidity are not None before converting to float
-        temperature = float(temperature) if temperature is not None else 0.0
-        rainfall = float(rainfall) if rainfall is not None else 0.0
-        humidity = float(humidity) if humidity is not None else 0.0
-
-        # Get input attributes from the form
-        attributes = {
-            'N': float(request.form['N']),
-            'P': float(request.form['P']),
-            'K': float(request.form['K']),
-            'Zn': float(request.form['Zn']),
-            'Mg': float(request.form['Mg']),
-            'S': float(request.form['S']),
-            'pH': float(request.form['pH']),
-            'Rainfall': rainfall,
-            'Temperature': temperature,
-            'Humidity': humidity
-        }
-
-        # Recommend crop
-        recommended_crop = recommend_crop(attributes)
-
-        return render_template('crop-prediction.html', recommended_crop=recommended_crop)
-    return render_template('crop-prediction.html', recommended_crop=None)
 
 def fetch_weather_data(lat, lon):
     api_key = '465ad6304f12419481b476deed2c4188'
