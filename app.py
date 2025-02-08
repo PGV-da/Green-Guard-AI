@@ -27,35 +27,6 @@ from fertilizer import fertilizer_dic
 app = Flask(__name__)
 app.secret_key = config.SECRET_KEY
 
-
-DATABASE = 'main.db'
-
-def create_tables():
-    conn = sqlite3.connect(DATABASE)
-    cursor = conn.cursor()
-
-    # Create users table if not exists
-    cursor.execute('''CREATE TABLE IF NOT EXISTS users (
-                        id INTEGER PRIMARY KEY AUTOINCREMENT,
-                        first_name TEXT NOT NULL,
-                        last_name TEXT NOT NULL,
-                        phone_number TEXT,
-                        email TEXT UNIQUE NOT NULL,
-                        password TEXT NOT NULL
-                    )''')
-
-    # Create messages table if not exists
-    cursor.execute('''CREATE TABLE IF NOT EXISTS messages (
-                        id INTEGER PRIMARY KEY AUTOINCREMENT,
-                        user_id INTEGER,
-                        message TEXT NOT NULL,
-                        image BLOB,
-                        FOREIGN KEY(user_id) REFERENCES users(id)
-                    )''')
-
-    conn.commit()
-    conn.close()
-
 # Custom Jinja2 filter for base64 encoding
 def b64encode_image(image):
     if image:
