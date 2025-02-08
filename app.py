@@ -36,121 +36,6 @@ def b64encode_image(image):
 # Register the filter with Jinja2
 app.jinja_env.filters['b64encode_image'] = b64encode_image
 
-model = load_model('Mobile_net_plant_disease_model.h5')
-
-
-class_indices = {
-    0: 'Apple___alternaria_leaf_spot',
-    1: 'Apple___black_rot',
-    2: 'Apple___brown_spot',
-    3: 'Apple___gray_spot',
-    4: 'Apple___healthy',
-    5: 'Apple___rust',
-    6: 'Apple___scab',
-    7: 'Bell_pepper___bacterial_spot',
-    8: 'Bell_pepper___healthy',
-    9: 'Blueberry___healthy',
-    10: 'Cassava___bacterial_blight',
-    11: 'Cassava___brown_streak_disease',
-    12: 'Cassava___green_mottle',
-    13: 'Cassava___healthy',
-    14: 'Cassava___mosaic_disease',
-    15: 'Cherry___healthy',
-    16: 'Cherry___powdery_mildew',
-    17: 'Corn___common_rust',
-    18: 'Corn___gray_leaf_spot',
-    19: 'Corn___healthy',
-    20: 'Corn___northern_leaf_blight',
-    21: 'Grape___black_measles',
-    22: 'Grape___black_rot',
-    23: 'Grape___healthy',
-    24: 'Grape___isariopsis_leaf_spot',
-    25: 'Grape_leaf_blight',
-    26: 'Orange___citrus_greening',
-    27: 'Peach___bacterial_spot',
-    28: 'Peach___healthy',
-    29: 'Potato___bacterial_wilt',
-    30: 'Potato___early_blight',
-    31: 'Potato___healthy',
-    32: 'Potato___late_blight',
-    33: 'Potato___nematode',
-    34: 'Potato___pests',
-    35: 'Potato___phytophthora',
-    36: 'Potato___virus',
-    37: 'Raspberry___healthy',
-    38: 'Rice___bacterial_blight',
-    39: 'Rice___blast',
-    40: 'Rice___brown_spot',
-    41: 'Rice___tungro',
-    42: 'Soybean___healthy',
-    43: 'Squash___powdery_mildew',
-    44: 'Strawberry___healthy',
-    45: 'Strawberry___leaf_scorch',
-    46: 'Sugarcane___healthy',
-    47: 'Sugarcane___mosaic',
-    48: 'Sugarcane___red_rot',
-    49: 'Sugarcane___rust',
-    50: 'Sugarcane___yellow_leaf',
-    51: 'Tomato___bacterial_spot',
-    52: 'Tomato___early_blight',
-    53: 'Tomato___healthy',
-    54: 'Tomato___late_blight',
-    55: 'Tomato___leaf_curl',
-    56: 'Tomato___leaf_mold',
-    57: 'Tomato___mosaic_virus',
-    58: 'Tomato___septoria_leaf_spot',
-    59: 'Tomato___spider_mites',
-    60: 'Tomato___target_spot'
-}
-
-def predict_and_visualize(image_path):
-    img = load_img(image_path, target_size=(224, 224))
-    img_array = img_to_array(img)
-    img_array = np.expand_dims(img_array, axis=0)  # Add batch dimension
-    img_array /= 255.0  # Normalize
-    prediction = model.predict(img_array)[0]
-    predicted_class_index = np.argmax(prediction)
-    predicted_class = class_indices[predicted_class_index]
-    confidence = prediction[predicted_class_index]
-    return predicted_class, confidence
-
-
-@app.route('/predict', methods=['POST'])
-@require_login
-def predict():
-    if 'file' not in request.files:
-        return render_template('disease-detection.html', message='No file part')
-    
-    file = request.files['file']
-    
-    if file.filename == '':
-        return render_template('disease-detection.html', message='No selected file')
-    
-    if file:
-        # Create the 'uploads' directory if it doesn't exist
-        if not os.path.exists('static/uploads'):
-            os.makedirs('static/uploads')
-        
-        # Save the uploaded file
-        file_path = os.path.join('static/uploads/', file.filename)
-        file.save(file_path)
-        
-        # Verify that the image file exists
-        if not os.path.exists(file_path):
-            return render_template('disease-detection.html', message='Uploaded file does not exist')
-        
-        # Predict the uploaded image
-        predicted_class, confidence = predict_and_visualize(file_path)
-        check=False
-        if confidence<0.7000000:
-            check=True
-        
-        # Get disease data
-        disease_info = disease_data.get(predicted_class, {'symptoms': 'Unknown', 'solution': 'Unknown'})
-        
-        # Pass the file path, predicted class, confidence, and disease info to the result template
-        return render_template('disease-detection.html', image_file=file_path, predicted_class=predicted_class, confidence=confidence,check=check, symptoms=disease_info['symptoms'], solution=disease_info['solution'])
-
 @app.route('/index')
 def index():
     return render_template('index.html')
@@ -192,10 +77,6 @@ def news():
 
     return render_template('news.html', news_articles=news_articles)
 
-@app.route('/diseasedetection')
-@require_login
-def diseasedetection():
-    return render_template('disease-detection.html')
 
 def fetch_weather_data(lat, lon):
     api_key = '465ad6304f12419481b476deed2c4188'
