@@ -1,5 +1,5 @@
 import random
-from flask import Blueprint, request, jsonify
+from flask import Blueprint, request, render_template, jsonify
 from utils.authentication import require_login
 
 chat_bp = Blueprint('chat', __name__)
@@ -96,4 +96,5 @@ def chat():
 @chat_bp.route('/chatassistant')
 @require_login
 def chatassistant():
+    """Renders the chat assistant page."""
     return render_template('chat-assistant.html')

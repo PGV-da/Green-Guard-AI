@@ -1,27 +1,32 @@
 from flask import Blueprint, request, render_template
 from services.crop_prediction import recommend_crop
+from utils.authentication import require_login
 import pandas as pd
 
 crop_bp = Blueprint('crop', __name__)
 
 @crop_bp.route('/cropprediction', methods=['GET', 'POST'])
+@require_login
 def crop_prediction():
+    """Handles the crop prediction form and displays results."""
     recommended_crop = None
 
     if request.method == 'POST':
-        attributes = {
-            'N': float(request.form['N']),
-            'P': float(request.form['P']),
-            'K': float(request.form['K']),
-            'Zn': float(request.form['Zn']),
-            'Mg': float(request.form['Mg']),
-            'S': float(request.form['S']),
-            'pH': float(request.form['pH']),
-            'Rainfall': float(request.form['Rainfall']),
-            'Temperature': float(request.form['Temperature']),
-            'Humidity': float(request.form['Humidity'])
-        }
-
-        recommended_crop = recommend_crop(attributes)
+        try:
+            attributes = {
+                'N': float(request.form.get('N', 0)),  # Default to 0 if missing
+                'P': float(request.form.get('P', 0)),
+                'K': float(request.form.get('K', 0)),
+                'Zn': float(request.form.get('Zn', 0)),
+                'Mg': float(request.form.get('Mg', 0)),
+                'S': float(request.form.get('S', 0)),
+                'pH': float(request.form.get('pH', 7.0)),  # Default to neutral pH
+                'Rainfall': float(request.form.get('Rainfall', 0)),
+                'Temperature': float(request.form.get('Temperature', 25.0)),  # Default reasonable values
+                'Humidity': float(request.form.get('Humidity', 50.0))
+            }
+            recommended_crop = recommend_crop(attributes)
+        except (TypeError, ValueError):
+            return render_template('crop-prediction.html', error="Invalid input values. Please enter numbers only.")
 
     return render_template('crop-prediction.html', recommended_crop=recommended_crop)

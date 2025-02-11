@@ -28,13 +28,23 @@ def fertilizer_recommendation():
 def recommend():
     """Processes user input and recommends fertilizers based on soil conditions."""
     crops_data = read_csv()
-    selected_crop = request.form['crop']
-    n, p, k, zn, mg, s = map(float, [request.form['N'], request.form['P'], request.form['K'],
-                                     request.form['Zn'], request.form['Mg'], request.form['S']])
+    selected_crop = request.form.get('crop', '')
+
+    # Validate crop selection
+    if selected_crop not in crops_data:
+        return render_template('fertilizer-recommendation.html', fertilizer="Crop not found in database.")
+
+    try:
+        n, p, k, zn, mg, s = map(float, [request.form['N'], request.form['P'], request.form['K'],
+                                         request.form['Zn'], request.form['Mg'], request.form['S']])
+    except ValueError:
+        return render_template('fertilizer-recommendation.html', fertilizer="Invalid input. Please enter numbers.")
+
+    attributes = {'N': n, 'P': p, 'K': k, 'Zn': zn, 'Mg': mg, 'S': s}
 
     for attribute, recommendation in fertilizer_dic.items():
         condition = crops_data[selected_crop]
-        if attribute in condition and condition[attribute][0] <= eval(attribute.lower()) <= condition[attribute][1]:
+        if attribute in attributes and condition[attribute][0] <= attributes[attribute] <= condition[attribute][1]:
             return render_template('fertilizer-recommendation.html', fertilizer=recommendation)
 
-    return render_template('fertilizer-recommendation.html', fertilizer='No recommendation found')
+    return render_template('fertilizer-recommendation.html', fertilizer='No recommendation found.')

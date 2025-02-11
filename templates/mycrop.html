@@ -31,7 +31,7 @@
         <br />
         <a
           class="sidebar-brand d-flex align-items-center justify-content-center"
-          href="{{ url_for('index') }}"
+          href="{{ url_for('general.index') }}"
         >
           <div class="sidebar-brand-icon rotate-n-15">
             <i class="fas fa-seedling"></i>
@@ -71,7 +71,7 @@
           >
             <div class="bg-white py-2 collapse-inner rounded">
               <h6 class="collapse-header">Components:</h6>
-              <a class="collapse-item" href="{{ url_for('mycrop') }}">My Crops</a>
+              <a class="collapse-item" href="{{ url_for('general.mycrop') }}">My Crops</a>
             </div>
           </div>
         </li>
@@ -97,14 +97,15 @@
           >
             <div class="bg-white py-2 collapse-inner rounded">
               <h6 class="collapse-header">Menu:</h6>
-              <a class="collapse-item" href="{{ url_for('price') }}">Commodity prices</a>
-              <a class="collapse-item" href="{{ url_for('currentweather') }}"
+              <a class="collapse-item" href="{{ url_for('price.price_prediction')
+ }}">Commodity prices</a>
+              <a class="collapse-item" href="{{ url_for('weather.current_weather') }}"
                 >Current Weather</a
               >
-              <a class="collapse-item" href="{{ url_for('upcomingweather') }}"
+              <a class="collapse-item" href="{{ url_for('weather.upcoming_weather') }}"
                 >Upcoming Weather</a
               >
-              <a class="collapse-item" href="{{ url_for('news') }}">News Updates</a>
+              <a class="collapse-item" href="{{ url_for('news.news') }}">News Updates</a>
             </div>
           </div>
         </li>
@@ -129,19 +130,20 @@
           >
             <div class="bg-white py-2 collapse-inner rounded">
               <h6 class="collapse-header">Options:</h6>
-              <a class="collapse-item" href="{{ url_for('diseasedetection') }}"
+              <a class="collapse-item" href="{{ url_for('disease.diseasedetection') }}"
                 >Disease Detection</a
               >
-              <a class="collapse-item" href="{{ url_for('cropprediction') }}"
+              <a class="collapse-item" href="{{ url_for('crop.crop_prediction') }}"
                 >Crop Prediction</a
               >
-              <a class="collapse-item" href="{{ url_for('fertilizerrecommendation') }}"
+              <a class="collapse-item" href="{{ url_for('fertilizer.recommend') }}"
                 >Fertilizer Recommendation</a
               >
-              <a class="collapse-item" href="{{ url_for('priceprediction') }}"
+              <a class="collapse-item" href="{{ url_for('price.price_prediction')
+ }}"
                 >Price Prediction</a
               >
-              <a class="collapse-item" href="{{ url_for('chatassistant') }}"
+              <a class="collapse-item" href="{{ url_for('chat.chatassistant') }}"
                 >Chat Assistant</a
               >
             </div>
@@ -158,7 +160,7 @@
 
         <!-- Nav Item - Charts -->
         <li class="nav-item">
-          <a class="nav-link" href="{{ url_for('community') }}">
+          <a class="nav-link" href="{{ url_for('community.community') }}">
             <i class="fas fa-fw fa-users"></i>
             <span>Community</span>
           </a>
@@ -169,7 +171,7 @@
         <!-- Nav Item - Tables -->
 
         <li class="nav-item">
-          <a class="nav-link" href="{{ url_for('aboutus') }}">
+          <a class="nav-link" href="{{ url_for('general.aboutus') }}">
             <i class="fas fa-info-circle"></i>
             <span>About us</span></a
           >

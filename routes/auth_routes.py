@@ -68,7 +68,7 @@ def login():
         if user and bcrypt.checkpw(password.encode('utf-8'), user['password'].encode('utf-8')):
             session['email'] = email
             flash('Login successful', 'success')
-            return redirect(url_for('index'))
+            return redirect(url_for('general.index'))
         else:
             flash('Invalid email or password', 'error')
 

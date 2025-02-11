@@ -10,22 +10,26 @@ community_bp = Blueprint('community', __name__)
 def community():
     conn = get_db_connection()
     cursor = conn.cursor()
+    
     cursor.execute('SELECT users.first_name, messages.message, messages.image FROM messages '
                    'JOIN users ON users.id = messages.user_id')
     messages = cursor.fetchall()
     conn.close()
 
-    # Decode images for rendering
-    for i, msg in enumerate(messages):
-        if msg["image"]:
-            messages[i] = (msg["first_name"], msg["message"], base64.b64encode(msg["image"]).decode('utf-8'))
-        else:
-            messages[i] = (msg["first_name"], msg["message"], None)
+    formatted_messages = []
 
-    return render_template('community.html', messages=messages)
+    for msg in messages:
+        image_b64 = base64.b64encode(msg["image"]).decode('utf-8') if msg["image"] else None
+        formatted_messages.append({
+            "name": msg["first_name"],
+            "message": msg["message"],
+            "image": image_b64
+        })
 
+    return render_template('community.html', messages=formatted_messages)
+
+@community_bp.route('/send_message', methods=['POST'])
 @require_login
-@app.route('/send_message', methods=['POST'])
 def send_message():
     user_email = session.get('email')
     message_text = request.form.get('message')
@@ -36,7 +40,7 @@ def send_message():
         return redirect(url_for('auth.login'))
 
     conn = get_db_connection()
-    cursor = conn.cursor()()
+    cursor = conn.cursor()
 
     cursor.execute('SELECT id FROM users WHERE email = ?', (user_email,))
     user = cursor.fetchone()
