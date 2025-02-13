@@ -1,5 +1,7 @@
 import csv
-from flask import Blueprint, request, render_template
+
+from flask import Blueprint, render_template, request
+
 from resources.fertilizer import fertilizer_dic
 from utils.authentication import require_login
 

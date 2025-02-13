@@ -1,5 +1,6 @@
 import requests
 from flask import Blueprint, render_template, request
+
 from config import config
 from utils.authentication import require_login
 

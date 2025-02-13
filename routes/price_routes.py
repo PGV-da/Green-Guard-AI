@@ -1,6 +1,7 @@
 import pandas as pd
-from flask import Blueprint, request, render_template, jsonify
+from flask import Blueprint, jsonify, render_template, request
 from statsmodels.tsa.arima.model import ARIMA
+
 from utils.authentication import require_login
 
 price_bp = Blueprint('price', __name__)

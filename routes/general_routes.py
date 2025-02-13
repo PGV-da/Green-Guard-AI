@@ -1,4 +1,5 @@
 from flask import Blueprint, render_template
+
 from utils.authentication import require_login
 
 general_bp = Blueprint('general', __name__)

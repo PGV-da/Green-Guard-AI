@@ -1,7 +1,10 @@
 import base64
-from flask import Blueprint, request, render_template, redirect, url_for, flash, session
-from utils.database import get_db_connection
+
+from flask import (Blueprint, flash, redirect, render_template, request,
+                   session, url_for)
+
 from utils.authentication import require_login
+from utils.database import get_db_connection
 
 community_bp = Blueprint('community', __name__)
 

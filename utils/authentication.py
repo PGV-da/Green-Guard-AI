@@ -1,6 +1,8 @@
-import bcrypt
 from functools import wraps
-from flask import session, redirect, url_for, flash
+
+import bcrypt
+from flask import flash, redirect, session, url_for
+
 
 def hash_password(password):
     """Hashes a password using bcrypt."""

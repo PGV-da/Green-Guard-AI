@@ -1,16 +1,17 @@
 from flask import Flask
+
 from config import config
-from utils.database import create_tables
 from routes.auth_routes import auth_bp
+from routes.chat_routes import chat_bp
+from routes.community_routes import community_bp
 from routes.crop_routes import crop_bp
 from routes.disease_routes import disease_bp
-from routes.community_routes import community_bp
-from routes.weather_routes import weather_bp
-from routes.price_routes import price_bp
 from routes.fertilizer_routes import fertilizer_bp
-from routes.news_routes import news_bp
-from routes.chat_routes import chat_bp
 from routes.general_routes import general_bp
+from routes.news_routes import news_bp
+from routes.price_routes import price_bp
+from routes.weather_routes import weather_bp
+from utils.database import create_tables
 
 app = Flask(__name__)
 app.secret_key = config.SECRET_KEY

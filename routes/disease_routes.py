@@ -1,8 +1,10 @@
 import os
-from flask import Blueprint, request, render_template
-from services.disease_detection import predict_and_visualize
-from resources.disease import disease_data
+
+from flask import Blueprint, render_template, request
+
 from config import config
+from resources.disease import disease_data
+from services.disease_detection import predict_and_visualize
 from utils.authentication import require_login
 
 disease_bp = Blueprint('disease', __name__)

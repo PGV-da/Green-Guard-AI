@@ -1,6 +1,9 @@
-from flask import Blueprint, request, render_template, redirect, url_for, flash, session
-import bcrypt
 import sqlite3
+
+import bcrypt
+from flask import (Blueprint, flash, redirect, render_template, request,
+                   session, url_for)
+
 from utils.database import get_db_connection
 
 auth_bp = Blueprint('auth', __name__)

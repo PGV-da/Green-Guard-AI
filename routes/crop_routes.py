@@ -1,7 +1,8 @@
-from flask import Blueprint, request, render_template
+import pandas as pd
+from flask import Blueprint, render_template, request
+
 from services.crop_prediction import recommend_crop
 from utils.authentication import require_login
-import pandas as pd
 
 crop_bp = Blueprint('crop', __name__)
 

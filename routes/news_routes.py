@@ -1,6 +1,7 @@
 import requests
 from bs4 import BeautifulSoup
 from flask import Blueprint, render_template
+
 from utils.authentication import require_login
 
 news_bp = Blueprint('news', __name__)

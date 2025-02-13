@@ -1,5 +1,7 @@
 import random
-from flask import Blueprint, request, render_template, jsonify
+
+from flask import Blueprint, jsonify, render_template, request
+
 from utils.authentication import require_login
 
 chat_bp = Blueprint('chat', __name__)
