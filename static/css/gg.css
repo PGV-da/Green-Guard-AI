@@ -316,7 +316,6 @@ button,
 [type="reset"],
 [type="submit"] {
   -webkit-appearance: button;
-  appearance: button;
 }
 
 button:not(:disabled),
@@ -376,7 +375,6 @@ progress {
 [type="search"] {
   outline-offset: -2px;
   -webkit-appearance: none;
-  appearance: none;
 }
 
 [type="search"]::-webkit-search-decoration {
@@ -3841,7 +3839,7 @@ input[type="button"].btn-block {
   min-height: 1.5rem;
   padding-left: 1.5rem;
   -webkit-print-color-adjust: exact;
-  print-color-adjust: exact;
+  color-adjust: exact;
 }
 
 .custom-control-inline {
