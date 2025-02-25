@@ -133,8 +133,8 @@
               <a class="collapse-item" href="{{ url_for('disease.diseasedetection') }}"
                 >Disease Detection</a
               >
-              <a class="collapse-item" href="{{ url_for('crop.crop_prediction') }}"
-                >Crop Prediction</a
+              <a class="collapse-item" href="{{ url_for('crop.crop_recommendation') }}"
+                >Crop Recommenation</a
               >
               <a class="collapse-item" href="{{ url_for('fertilizer.fertilizer_recommendation') }}"
                 >Fertilizer Recommendation</a
@@ -342,13 +342,14 @@
             <!-- Page Heading -->
             <div class="row justify-content-center">
               <div class="col-lg-7 text-center">
-                  <h1 class="h1 mb-2 text-gray-900">Upload Image</h1>
+                <h1 class="text-success">Disease Detection System<span class="text-success">🦠</span></h1>
+                  <h2 class="h2 mb-2 text-gray-900">Upload Image</h2>
                   <div class="card shadow mb-4">
                       <div class="card-body text-gray-900">
                           {% if message %}
                           <p>{{ message }}</p>
                           {% endif %}
-                          <form class="user" method="post" enctype="multipart/form-data" action="/predict">
+                          <form class="user" method="post" enctype="multipart/form-data" action="/disease/predict">
                               <div class="form-group">
                                   <input type="file" class="form-control-file" name="file">
                               </div>

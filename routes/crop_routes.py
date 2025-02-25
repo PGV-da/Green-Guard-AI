@@ -20,8 +20,8 @@ crop_dict = {
     21: "Chickpea", 22: "Coffee"
 }
 
-@crop_bp.route('/crop-prediction')
-def crop_prediction():
+@crop_bp.route('/crop-recommendation')
+def crop_recommendation():
     return render_template("crop-prediction.html")
 
 @crop_bp.route("/predict", methods=['POST'])
