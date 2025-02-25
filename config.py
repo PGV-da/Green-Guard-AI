@@ -4,7 +4,7 @@ class Config:
     SECRET_KEY = os.getenv('SECRET_KEY', os.urandom(24))
     DATABASE = os.getenv('DATABASE_URL', 'main.db')
     UPLOAD_FOLDER = 'static/uploads'
-    MODEL_PATH = 'models/Mobile_net_plant_disease_model.h5'
+    DISEASE_MODEL_PATH = 'models/disease_detection/Mobile_net_plant_disease_model.h5'
     WEATHER_API_KEY = '465ad6304f12419481b476deed2c4188'
 
 config = Config()

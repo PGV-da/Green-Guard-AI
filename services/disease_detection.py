@@ -5,7 +5,7 @@ from tensorflow.keras.preprocessing.image import img_to_array, load_img
 from config import config
 
 # Load pre-trained model
-model = load_model(config.MODEL_PATH)
+model = load_model(config.DISEASE_MODEL_PATH)
 
 # Class indices for disease classification
 class_indices = {

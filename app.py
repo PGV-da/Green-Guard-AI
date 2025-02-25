@@ -22,7 +22,7 @@ create_tables()
 
 # Register Blueprints (modularized routes)
 app.register_blueprint(auth_bp)
-app.register_blueprint(crop_bp)
+app.register_blueprint(crop_bp, url_prefix="/crop")
 app.register_blueprint(disease_bp)
 app.register_blueprint(community_bp)
 app.register_blueprint(weather_bp)

@@ -1,33 +1,58 @@
+import pickle
 import pandas as pd
+import numpy as np
 from flask import Blueprint, render_template, request
 
-from services.crop_prediction import recommend_crop
 from utils.authentication import require_login
 
 crop_bp = Blueprint('crop', __name__)
 
-@crop_bp.route('/cropprediction', methods=['GET', 'POST'])
-@require_login
+model = pickle.load(open('models/crop_recommendation/model.pkl','rb'))
+sc = pickle.load(open('models/crop_recommendation/standscaler.pkl','rb'))
+mx = pickle.load(open('models/crop_recommendation/minmaxscaler.pkl','rb'))
+
+# Crop dictionary
+crop_dict = {
+    1: "Rice", 2: "Maize", 3: "Jute", 4: "Cotton", 5: "Coconut", 6: "Papaya",
+    7: "Orange", 8: "Apple", 9: "Muskmelon", 10: "Watermelon", 11: "Grapes",
+    12: "Mango", 13: "Banana", 14: "Pomegranate", 15: "Lentil", 16: "Blackgram",
+    17: "Mungbean", 18: "Mothbeans", 19: "Pigeonpeas", 20: "Kidneybeans",
+    21: "Chickpea", 22: "Coffee"
+}
+
+@crop_bp.route('/crop-prediction')
 def crop_prediction():
+    return render_template("crop-prediction.html")
+
+@crop_bp.route("/predict", methods=['POST'])
+@require_login
+def predict():
     """Handles the crop prediction form and displays results."""
-    recommended_crop = None
+    try:
+        # Get input values
+        N = float(request.form['Nitrogen'])
+        P = float(request.form['Phosporus'])
+        K = float(request.form['Potassium'])
+        temp = float(request.form['Temperature'])
+        humidity = float(request.form['Humidity'])
+        ph = float(request.form['pH'])
+        rainfall = float(request.form['Rainfall'])
 
-    if request.method == 'POST':
-        try:
-            attributes = {
-                'N': float(request.form.get('N', 0)),  # Default to 0 if missing
-                'P': float(request.form.get('P', 0)),
-                'K': float(request.form.get('K', 0)),
-                'Zn': float(request.form.get('Zn', 0)),
-                'Mg': float(request.form.get('Mg', 0)),
-                'S': float(request.form.get('S', 0)),
-                'pH': float(request.form.get('pH', 7.0)),  # Default to neutral pH
-                'Rainfall': float(request.form.get('Rainfall', 0)),
-                'Temperature': float(request.form.get('Temperature', 25.0)),  # Default reasonable values
-                'Humidity': float(request.form.get('Humidity', 50.0))
-            }
-            recommended_crop = recommend_crop(attributes)
-        except (TypeError, ValueError):
-            return render_template('crop-prediction.html', error="Invalid input values. Please enter numbers only.")
+        # Prepare feature list
+        feature_list = [N, P, K, temp, humidity, ph, rainfall]
+        single_pred = np.array(feature_list).reshape(1, -1)
 
-    return render_template('crop-prediction.html', recommended_crop=recommended_crop)
+        # Apply transformations
+        mx_features = mx.transform(single_pred)
+        sc_mx_features = sc.transform(mx_features)
+
+        # Make prediction
+        prediction = model.predict(sc_mx_features)[0]
+        crop = crop_dict.get(prediction, "Unknown Crop")
+
+        result = f"{crop} is the best crop to be cultivated right there."
+    except Exception as e:
+        result = f"Error: {str(e)}"
+
+    return render_template('crop-prediction.html', result=result)
+    
