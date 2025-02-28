@@ -1,23 +1,20 @@
 import csv
+import pickle
+import pandas as pd
 
-from flask import Blueprint, render_template, request
+from flask import Blueprint, render_template, url_for, request
 
-from resources.fertilizer import fertilizer_dic
+from resources.fertilizer import fertilizer_details, fertilizer_images
 from utils.authentication import require_login
+from config import config
 
 fertilizer_bp = Blueprint('fertilizer', __name__)
 
-def read_csv():
-    """Reads crop data from a CSV file and stores it in a dictionary."""
-    crops_data = {}
-    with open('data/crop_data.csv', mode='r') as file:
-        reader = csv.DictReader(file)
-        for row in reader:
-            crop_name = row['Crop_Subcategory']
-            crop_values = {key: tuple(map(float, value.split('-'))) if '-' in value else (float(value), float(value))
-                           for key, value in row.items() if key != 'Crop_Subcategory'}
-            crops_data[crop_name] = crop_values
-    return crops_data
+with open(config.FERTILIZER_MODEL_PATH, "rb") as model_file:
+    model = pickle.load(model_file)
+
+with open(config.TRANSFORMER_PATH, "rb") as transformer_file:
+    transformer = pickle.load(transformer_file)
 
 @fertilizer_bp.route('/fertilizer-recommendation')
 @require_login
@@ -29,24 +26,53 @@ def fertilizer_recommendation():
 @require_login
 def recommend():
     """Processes user input and recommends fertilizers based on soil conditions."""
-    crops_data = read_csv()
-    selected_crop = request.form.get('crop', '')
-
-    # Validate crop selection
-    if selected_crop not in crops_data:
-        return render_template('fertilizer-recommendation.html', fertilizer="Crop not found in database.")
-
     try:
-        n, p, k, zn, mg, s = map(float, [request.form['N'], request.form['P'], request.form['K'],
-                                         request.form['Zn'], request.form['Mg'], request.form['S']])
-    except ValueError:
-        return render_template('fertilizer-recommendation.html', fertilizer="Invalid input. Please enter numbers.")
+        # Retrieve form data
+        form_data = request.form
 
-    attributes = {'N': n, 'P': p, 'K': k, 'Zn': zn, 'Mg': mg, 'S': s}
+        # Create input dictionary matching the dataset column names
+        input_data = {
+            "Soil_color": form_data["Soil_color"],
+            "Nitrogen": float(form_data["Nitrogen"]),
+            "Phosphorus": float(form_data["Phosphorus"]),
+            "Potassium": float(form_data["Potassium"]),
+            "pH": float(form_data["pH"]),
+            "Rainfall": float(form_data["Rainfall"]),
+            "Temperature": float(form_data["Temperature"]),
+            "Crop": form_data["Crop"]
+        }
 
-    for attribute, recommendation in fertilizer_dic.items():
-        condition = crops_data[selected_crop]
-        if attribute in attributes and condition[attribute][0] <= attributes[attribute] <= condition[attribute][1]:
-            return render_template('fertilizer-recommendation.html', fertilizer=recommendation)
+        # Convert to DataFrame
+        input_df = pd.DataFrame([input_data])
 
-    return render_template('fertilizer-recommendation.html', fertilizer='No recommendation found.')
+        # Transform the data using the loaded transformer
+        transformed_input = transformer.transform(input_df)
+
+        # Make a prediction
+        prediction = model.predict(transformed_input)
+        fertilizer_name = prediction[0]
+        
+        # Fetch fertilizer details
+        details = fertilizer_details.get(fertilizer_name, {
+            "description": "Description not available.",
+            "uses": "Uses not available.",
+            "when_to_use": "Timing not available.",
+            "amount": "Amount not available.",
+            "tips": "Application tips not available."
+        })
+        image = fertilizer_images.get(fertilizer_name, "default.png")  # Use default image if not found
+        image_url = url_for('static', filename=f"images/fertilizer_images/{image}")
+
+        return render_template(
+        "fertilizer_result.html",
+        fertilizer_name=fertilizer_name,
+        description=details["description"],
+        uses=details["uses"],
+        when_to_use=details["when_to_use"],
+        amount=details["amount"],
+        tips=details["tips"],
+        image_url=image_url
+    )
+
+    except Exception as e:
+        return f"Error during prediction: {e}"
