@@ -1,0 +1,138 @@
+/* commodity-prices.css */
+
+/* Container for the entire commodity prices section */
+.commodity-prices-container {
+    background-color: #f3f4f6;
+    padding: 20px;
+    max-width: 100% !important; /* Override Bootstrap's max-width */
+    margin-left: 0 !important; /* Remove left margin */
+    margin-right: 0 !important; /* Remove right margin */
+    width: 100% !important; /* Ensure full width */
+}
+
+/* Inner container for the table and filters */
+.commodity-prices-container {
+    background-color: #f3f4f6;
+    padding: 20px;
+    max-width: 100% !important; /* Override Bootstrap's max-width */
+    margin-left: 0 !important; /* Remove left margin */
+    margin-right: 0 !important; /* Remove right margin */
+    width: 100% !important; /* Ensure full width */
+}
+
+/* Heading */
+.commodity-prices-heading {
+    font-size: 1.5rem; /* Equivalent to Tailwind's text-2xl */
+    font-weight: 700; /* Equivalent to Tailwind's font-bold */
+    text-align: center; /* Equivalent to Tailwind's text-center */
+    color: #16a34a; /* Equivalent to Tailwind's text-green-600 */
+}
+
+/* Paragraph */
+.commodity-prices-paragraph {
+    text-align: center; /* Equivalent to Tailwind's text-center */
+    margin-top: 0.5rem; /* Equivalent to Tailwind's mt-2 */
+    color: #4b5563; /* Equivalent to Tailwind's text-gray-600 */
+}
+
+.commodity-prices-paragraph a {
+    color: #3b82f6; /* Equivalent to Tailwind's text-blue-500 */
+    text-decoration: underline; /* Equivalent to Tailwind's underline */
+}
+
+/* Filter container */
+#filterContainer {
+    margin-top: 1rem; /* Equivalent to Tailwind's mt-4 */
+    display: flex; /* Equivalent to Tailwind's flex */
+    flex-wrap: wrap; /* Equivalent to Tailwind's flex-wrap */
+    justify-content: center; /* Equivalent to Tailwind's justify-center */
+    gap: 0.75rem; /* Equivalent to Tailwind's gap-3 */
+}
+
+#filterContainer.hidden {
+    display: none; /* Equivalent to Tailwind's hidden */
+}
+
+#filterContainer select {
+    border: 1px solid #d1d5db; /* Equivalent to Tailwind's border */
+    border-radius: 0.25rem; /* Equivalent to Tailwind's rounded */
+    padding: 0.25rem 0.5rem; /* Equivalent to Tailwind's px-2 py-1 */
+}
+
+/* Table container */
+.table-wrapper {
+    overflow-x: hidden; /* Prevent horizontal scrolling */
+    width: 100%; /* Ensure the wrapper takes the full width */
+}
+
+.table-container {
+    max-height: 500px;
+    overflow-y: auto; /* Allow vertical scrolling */
+    width: 100%; /* Ensure the container fits within the parent */
+}
+
+table {
+    width: 100%;
+    table-layout: fixed; /* Force columns to fit within the table width */
+    background-color: #ffffff;
+    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+    border-radius: 0.5rem;
+    border-collapse: collapse;
+}
+
+th, td {
+    padding: 0.5rem 0.25rem;
+    text-align: center;
+    white-space: normal; /* Allow text to wrap */
+    word-wrap: break-word; /* Ensure long words break */
+    font-size: 0.9rem;
+    border: 1px solid #e5e7eb;
+    width: auto; /* Let columns adjust automatically */
+    min-width: 0; /* Allow columns to shrink as needed */
+    max-width: none; /* Remove max-width to let columns adjust */
+}
+
+/* Pagination */
+#pagination.pagination {
+    display: flex; /* Equivalent to Tailwind's flex */
+    justify-content: center; /* Equivalent to Tailwind's justify-center */
+    align-items: center; /* Equivalent to Tailwind's align-items-center */
+    gap: 10px; /* From your existing style */
+    margin-top: 20px; /* From your existing style */
+}
+
+#pagination.pagination.hidden {
+    display: none; /* Equivalent to Tailwind's hidden */
+}
+
+#pagination.pagination button {
+    background-color: #e6f4ea; /* From your existing style */
+    border: 1px solid #d1e7dd; /* From your existing style */
+    padding: 8px 16px; /* From your existing style */
+    border-radius: 5px; /* From your existing style */
+    cursor: pointer; /* From your existing style */
+    transition: background-color 0.3s; /* From your existing style */
+}
+
+#pagination.pagination button:disabled {
+    background-color: #f1f3f5; /* From your existing style */
+    cursor: not-allowed; /* From your existing style */
+}
+
+#pagination.pagination button:hover:not(:disabled) {
+    background-color: #d1e7dd; /* From your existing style */
+}
+
+#pagination.pagination span {
+    padding: 8px 12px; /* From your existing style */
+    background-color: #e6f4ea; /* From your existing style */
+    border-radius: 5px; /* From your existing style */
+}
+
+/* Responsive adjustments for smaller screens */
+@media (max-width: 768px) {
+    th, td {
+        font-size: 0.75rem; /* Smaller font size on mobile */
+        padding: 0.3rem 0.15rem; /* Reduce padding further */
+    }
+}

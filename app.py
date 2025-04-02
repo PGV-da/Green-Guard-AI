@@ -11,6 +11,7 @@ from routes.general_routes import general_bp
 from routes.news_routes import news_bp
 from routes.price_routes import price_bp
 from routes.weather_routes import weather_bp
+from routes.commodityprice_routes import commodityprice_bp
 from utils.database import create_tables
 
 app = Flask(__name__)
@@ -31,6 +32,7 @@ app.register_blueprint(fertilizer_bp)
 app.register_blueprint(news_bp)
 app.register_blueprint(chat_bp)
 app.register_blueprint(general_bp)
+app.register_blueprint(commodityprice_bp)
 
 
 if __name__ == '__main__':
