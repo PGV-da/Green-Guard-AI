@@ -11,4 +11,8 @@ class Config:
     FERTILIZER_MODEL_PATH ='models/fertilizer_recommendation/decision_tree_model.pkl'
     TRANSFORMER_PATH = 'models/fertilizer_recommendation/transformer.pkl'
 
+    # Commodity Price API for data.gov.in
+    API_KEY = "579b464db66ec23bdd0000012a392a566362485c4e95c88c71108314"
+    BASE_URL = "https://api.data.gov.in/resource/35985678-0d79-46b4-9ed6-6f13308a1d24"
+
 config = Config()
