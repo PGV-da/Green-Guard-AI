@@ -1,7 +1,6 @@
 from langchain_chroma import Chroma
 from langchain_ollama import ChatOllama, OllamaEmbeddings
-
-# from langchain_openai import AzureOpenAIEmbeddings, AzureChatOpenAI
+from langchain_groq import ChatGroq# from langchain_openai import AzureOpenAIEmbeddings, AzureChatOpenAI
 
 class Models:
     def __init__(self):
@@ -12,9 +11,12 @@ class Models:
 
         # ollama pull llama3.2
         self.model_ollama = ChatOllama(
-            model="llama3.2",
+            model="llama3.1",
             temperature=0,
         )
+        # self.model_ollama = ChatGroq(api_key="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",
+        # model_name="llama-3.1-8b-instant"
+        # )
 
         # Initialize vector store once and reuse
         self.vector_store = Chroma(
