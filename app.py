@@ -37,4 +37,5 @@ app.register_blueprint(commodityprice_bp)
 
 if __name__ == '__main__':
     create_tables()
-    app.run(debug=False)
+    port = int(config.PORT)
+    app.run(host='0.0.0.0', port=port, debug=False)
