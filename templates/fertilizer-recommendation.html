@@ -68,8 +68,7 @@
         <div id="collapseUtilities" class="collapse" aria-labelledby="headingUtilities" data-parent="#accordionSidebar">
           <div class="bg-white py-2 collapse-inner rounded">
             <h6 class="collapse-header">Menu:</h6>
-            <a class="collapse-item" href="{{ url_for('commodityprice.commodityprice')
- }}">Commodity prices</a>
+            <a class="collapse-item" href="{{ url_for('commodityprice.commodityprice')}}">Commodity prices</a>
             <a class="collapse-item" href="{{ url_for('weather.current_weather') }}">Current Weather</a>
             <a class="collapse-item" href="{{ url_for('weather.upcoming_weather') }}">Upcoming Weather</a>
             <a class="collapse-item" href="{{ url_for('news.news') }}">News Updates</a>
@@ -88,10 +87,8 @@
             <h6 class="collapse-header">Options:</h6>
             <a class="collapse-item" href="{{ url_for('disease.diseasedetection') }}">Disease Detection</a>
             <a class="collapse-item" href="{{ url_for('crop.crop_recommendation') }}">Crop Recommenation</a>
-            <a class="collapse-item" href="{{ url_for('fertilizer.fertilizer_recommendation') }}">Fertilizer
-              Recommendation</a>
-            <a class="collapse-item" href="{{ url_for('price.price_prediction')
- }}">Price Prediction</a>
+            <a class="collapse-item" href="{{ url_for('fertilizer.fertilizer_recommendation') }}">Fertilizer Recommendation</a>
+            <a class="collapse-item" href="{{ url_for('price.price_prediction')}}">Price Prediction</a>
             <a class="collapse-item" href="{{ url_for('chat.chatassistant') }}">Chat Assistant</a>
           </div>
         </div>
@@ -232,7 +229,7 @@
             <div class="col-md-8 col-sm-10">
               <div class="card shadow">
                 <div class="card-body">
-                  
+
                   <!-- Prediction Form -->
                   <form action="{{ url_for('fertilizer.recommend') }}" method="POST">
                     <!-- Soil Color -->
@@ -248,7 +245,7 @@
                         <option>Reddish Brown</option>
                       </select>
                     </div>
-      
+
                     <!-- Crop -->
                     <div class="form-group">
                       <label for="Crop">Crop</label>
@@ -272,48 +269,49 @@
                         <option>Grapes</option>
                       </select>
                     </div>
-      
+
                     <!-- Nitrogen -->
                     <div class="form-group">
                       <label for="Nitrogen">Nitrogen (Suggested range: 20 - 150)</label>
                       <input type="number" step="0.01" class="form-control" id="Nitrogen" name="Nitrogen"
                         placeholder="Enter Nitrogen" required>
                     </div>
-      
+
                     <!-- Phosphorus -->
                     <div class="form-group">
                       <label for="Phosphorus">Phosphorus (Suggested range: 10 - 90)</label>
                       <input type="number" step="0.01" class="form-control" id="Phosphorus" name="Phosphorus"
                         placeholder="Enter Phosphorus" required>
                     </div>
-      
+
                     <!-- Potassium -->
                     <div class="form-group">
                       <label for="Potassium">Potassium (Suggested range: 5 - 150)</label>
                       <input type="number" step="0.01" class="form-control" id="Potassium" name="Potassium"
                         placeholder="Enter Potassium" required>
                     </div>
-      
+
                     <!-- pH -->
                     <div class="form-group">
                       <label for="pH">pH (Suggested values: 5.5 - 8.5)</label>
-                      <input type="number" step="0.01" class="form-control" id="pH" name="pH" placeholder="Enter pH" required>
+                      <input type="number" step="0.01" class="form-control" id="pH" name="pH" placeholder="Enter pH"
+                        required>
                     </div>
-      
+
                     <!-- Rainfall -->
                     <div class="form-group">
                       <label for="Rainfall">Rainfall (mm) (Suggested range: 300 - 1700)</label>
                       <input type="number" step="0.01" class="form-control" id="Rainfall" name="Rainfall"
                         placeholder="Enter Rainfall" required>
                     </div>
-      
+
                     <!-- Temperature -->
                     <div class="form-group">
                       <label for="Temperature">Temperature (°C) (Suggested values: 10 - 40)</label>
                       <input type="number" step="0.01" class="form-control" id="Temperature" name="Temperature"
                         placeholder="Enter Temperature" required>
                     </div>
-      
+
                     <!-- Submit Button -->
                     <div class="d-flex justify-content-center">
                       <button type="submit" class="btn btn-primary predict_button">Recommend</button>
