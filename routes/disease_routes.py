@@ -45,7 +45,7 @@ def predict():
             # Fetch disease details
             disease_info = disease_data.get(predicted_class, {'symptoms': 'Unknown', 'solution': 'Unknown'})
 
-            return render_template('disease-detection.html', image_file=file_path,
+            return render_template('disease-detection.html', image_filename=file.filename,
                                    predicted_class=predicted_class, confidence=confidence,
                                    check=check, symptoms=disease_info['symptoms'],
                                    solution=disease_info['solution'])

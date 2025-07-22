@@ -351,9 +351,22 @@
                           {% endif %}
                           <form class="user" method="post" enctype="multipart/form-data" action="/disease/predict">
                               <div class="form-group">
-                                  <input type="file" class="form-control-file" name="file">
+                                  <input type="file" class="form-control-file" name="file" id="imageUpload" accept="image/*" onchange="previewImage(this)">
+                                  <small class="form-text text-muted">
+                                      <i class="fas fa-info-circle"></i> 
+                                      Supported formats: JPG, PNG, JPEG. Max size: 10MB
+                                  </small>
                               </div>
-                              <button type="submit" class="btn btn-primary btn-block">Upload</button>
+                              
+                              <!-- Image Preview Section -->
+                              <div id="imagePreview" class="text-center mb-3" style="display: none;">
+                                  <h6>Image Preview:</h6>
+                                  <img id="preview" class="img-fluid rounded shadow-sm" style="max-width: 100%; max-height: 200px; border: 2px solid #e3e6f0;">
+                              </div>
+                              
+                              <button type="submit" class="btn btn-primary btn-block" id="uploadBtn">
+                                  <i class="fas fa-upload"></i> Upload & Analyze
+                              </button>
                           </form>
                       </div>
                   </div>
@@ -364,18 +377,65 @@
               <div class="col-lg-7">
                   <div class="card shadow mb-4">
                     <div class="card-header text-center text-gray-900 ">
-                      <h2>Result</h2>
+                      <h2>Disease Detection Result</h2>
                     </div>
                       <div class="card-body text-gray-900">
-                        
-                          <p>Predicted Disease: {{ predicted_class }}</p>
-                          <img class="img-fluid" src="{{ url_for('static', filename='uploads/' + image_file.split('/')[-1]) }}" alt="Uploaded Image">
-                          <p>Confidence: {{ confidence }}</p>
-                          <p>Check:{{ check }}</p>
-                          <h3>Symptoms:</h3>
-                          <p>{{ symptoms }}</p>
-                          <h3>Solution:</h3>
-                          <p>{{ solution }}</p>
+                          <!-- Image Display Section -->
+                          <div class="text-center mb-4">
+                              <h4>Uploaded Image:</h4>
+                              <img id="result-img" 
+                                   class="img-fluid rounded shadow-sm" 
+                                   src="{{ url_for('static', filename='uploads/' + image_filename) }}" 
+                                   alt="Uploaded Plant Image"
+                                   style="max-width: 100%; max-height: 400px; border: 2px solid #e3e6f0;"
+                                   onerror="this.style.display='none'; document.getElementById('image-error').style.display='block';">
+                              <div id="image-error" style="display: none;" class="alert alert-warning mt-2">
+                                  <i class="fas fa-exclamation-triangle"></i> 
+                                  Unable to display image. Please try uploading again.
+                              </div>
+                          </div>
+                          
+                          <!-- Prediction Results -->
+                          <div class="row">
+                              <div class="col-md-6">
+                                  <h5><i class="fas fa-bug text-danger"></i> Predicted Disease:</h5>
+                                  <p class="font-weight-bold text-primary">{{ predicted_class }}</p>
+                              </div>
+                              <div class="col-md-6">
+                                  <h5><i class="fas fa-percentage text-info"></i> Confidence:</h5>
+                                  <div class="progress mb-2">
+                                      <div class="progress-bar {% if confidence >= 0.7 %}bg-success{% elif confidence >= 0.5 %}bg-warning{% else %}bg-danger{% endif %}" 
+                                           role="progressbar" 
+                                           style="width: {{ (confidence * 100)|round(1) }}%">
+                                          {{ (confidence * 100)|round(1) }}%
+                                      </div>
+                                  </div>
+                                  {% if check %}
+                                  <small class="text-warning">
+                                      <i class="fas fa-exclamation-circle"></i> 
+                                      Low confidence - consider uploading a clearer image
+                                  </small>
+                                  {% endif %}
+                              </div>
+                          </div>
+                          
+                          <hr>
+                          
+                          <!-- Symptoms Section -->
+                          <div class="mb-3">
+                              <h5><i class="fas fa-stethoscope text-warning"></i> Symptoms:</h5>
+                              <div class="bg-light p-3 rounded">
+                                  <p class="mb-0">{{ symptoms }}</p>
+                              </div>
+                          </div>
+                          
+                          <!-- Solution Section -->
+                          <div class="mb-3">
+                              <h5><i class="fas fa-lightbulb text-success"></i> Recommended Solution:</h5>
+                              <div class="bg-light p-3 rounded">
+                                  <p class="mb-0">{{ solution }}</p>
+                              </div>
+                          </div>
                       </div>
                   </div>
               </div>
@@ -448,6 +508,56 @@
 <script src="{{ url_for('static', filename='vendor/bootstrap/js/bootstrap.bundle.min.js') }}"></script>
 <script src="{{ url_for('static', filename='vendor/jquery-easing/jquery.easing.min.js') }}"></script>
 <script src="{{ url_for('static', filename='js/gg.min.js') }}"></script>
+
+<script>
+// Image preview functionality
+function previewImage(input) {
+    const preview = document.getElementById('preview');
+    const previewContainer = document.getElementById('imagePreview');
+    const uploadBtn = document.getElementById('uploadBtn');
+    
+    if (input.files && input.files[0]) {
+        const file = input.files[0];
+        
+        // Validate file type
+        if (!file.type.match('image.*')) {
+            alert('Please select a valid image file (JPG, PNG, JPEG)');
+            input.value = '';
+            previewContainer.style.display = 'none';
+            return;
+        }
+        
+        // Validate file size (10MB)
+        if (file.size > 10 * 1024 * 1024) {
+            alert('File size too large. Please select an image smaller than 10MB.');
+            input.value = '';
+            previewContainer.style.display = 'none';
+            return;
+        }
+        
+        const reader = new FileReader();
+        reader.onload = function(e) {
+            preview.src = e.target.result;
+            previewContainer.style.display = 'block';
+            uploadBtn.innerHTML = '<i class="fas fa-upload"></i> Upload & Analyze';
+            uploadBtn.disabled = false;
+        }
+        reader.readAsDataURL(file);
+    } else {
+        previewContainer.style.display = 'none';
+        uploadBtn.innerHTML = '<i class="fas fa-upload"></i> Upload & Analyze';
+    }
+}
+
+// Form submission handling
+$(document).ready(function() {
+    $('form').on('submit', function() {
+        const uploadBtn = $('#uploadBtn');
+        uploadBtn.html('<i class="fas fa-spinner fa-spin"></i> Analyzing...');
+        uploadBtn.prop('disabled', true);
+    });
+});
+</script>
 
   </body>
 </html>
