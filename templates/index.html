@@ -18,6 +18,9 @@
 <!-- Custom styles for this template-->
 <link href="{{ url_for('static', filename='css/gg.css') }}" rel="stylesheet" />
 
+<!-- Garden Home Page Styles -->
+<link href="{{ url_for('static', filename='css/home-garden.css') }}" rel="stylesheet" />
+
 
   <body id="page-top">
     <!-- Page Wrapper -->
@@ -337,17 +340,120 @@
           <!-- End of Topbar -->
 
           <!-- Begin Page Content -->
-          <div class="container-fluid">
-            <!-- Page Heading -->
-            <h1 class="h1 mb-4 text-gray-900 text-center">
+          <div class="container-fluid garden-home">
+            <!-- Floating Garden Elements -->
+            <div class="floating-elements">
+              <div class="floating-leaf leaf-1">🍃</div>
+              <div class="floating-leaf leaf-2">🌿</div>
+              <div class="floating-leaf leaf-3">🦋</div>
+              <div class="floating-leaf leaf-4">🌸</div>
+              <div class="floating-leaf leaf-5">🐝</div>
+            </div>
 
-              Welcome to Our Gardening Assistant
-            </h1>
-            <p class="h3 mb-4 text-gray-900 text-center" >
-              Your gardening companion for plant care, tips, and more!
-            </p>
-            <img src="{{ url_for('static', filename='img/logo.png') }}" alt="Gardening Assistant Logo" class="center-image" />
+            <!-- Hero Section -->
+            <div class="hero-section">
+              <div class="hero-content">
+                <div class="hero-text">
+                  <h1 class="hero-title">
+                    🌻 Welcome to Green Guardian AI!
+                  </h1>
+                  <p class="hero-subtitle">
+                    Empowering your garden with intelligence
+                  </p>
+                  <p class="hero-description">
+                    Your smart companion for plant care, disease detection, crop recommendations, and sustainable farming practices.
+                  </p>
+                </div>
+                <div class="hero-illustration">
+                  <div class="illustration-container">
+                    <div class="farmer-robot">
+                      <div class="farmer">👨‍🌾</div>
+                      <div class="robot">🤖</div>
+                      <div class="sapling">🌱</div>
+                    </div>
+                    <div class="growth-animation">
+                      <div class="seed">🌰</div>
+                      <div class="sprout">🌱</div>
+                      <div class="plant">🌿</div>
+                      <div class="flower">🌻</div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
 
+            <!-- Feature Cards Section -->
+            <div class="features-section">
+              <h2 class="features-title">🌿 What Your Garden Can Do</h2>
+              <div class="features-grid">
+                <!-- Forecasting Card -->
+                <div class="feature-card">
+                  <div class="feature-icon">
+                    <i class="fas fa-cloud-sun"></i>
+                  </div>
+                  <h3 class="feature-title">Smart Forecasting</h3>
+                  <p class="feature-description">
+                    Get weather predictions, crop prices, and market trends to plan your farming activities.
+                  </p>
+                  <a href="{{ url_for('weather.current_weather') }}" class="feature-link">
+                    Explore Weather <i class="fas fa-arrow-right"></i>
+                  </a>
+                </div>
+
+                <!-- AI Tips Card -->
+                <div class="feature-card">
+                  <div class="feature-icon">
+                    <i class="fas fa-brain"></i>
+                  </div>
+                  <h3 class="feature-title">AI-Powered Insights</h3>
+                  <p class="feature-description">
+                    Intelligent crop recommendations, disease detection, and personalized farming advice.
+                  </p>
+                  <a href="{{ url_for('crop.crop_recommendation') }}" class="feature-link">
+                    Get AI Help <i class="fas fa-arrow-right"></i>
+                  </a>
+                </div>
+
+                <!-- Plant Care Card -->
+                <div class="feature-card">
+                  <div class="feature-icon">
+                    <i class="fas fa-leaf"></i>
+                  </div>
+                  <h3 class="feature-title">Expert Plant Care</h3>
+                  <p class="feature-description">
+                    Disease detection, fertilizer recommendations, and comprehensive plant health monitoring.
+                  </p>
+                  <a href="{{ url_for('disease.diseasedetection') }}" class="feature-link">
+                    Check Plant Health <i class="fas fa-arrow-right"></i>
+                  </a>
+                </div>
+
+                <!-- Community Card -->
+                <div class="feature-card">
+                  <div class="feature-icon">
+                    <i class="fas fa-users"></i>
+                  </div>
+                  <h3 class="feature-title">Farmer Community</h3>
+                  <p class="feature-description">
+                    Connect with fellow farmers, share experiences, and learn from agricultural experts.
+                  </p>
+                  <a href="{{ url_for('community.community') }}" class="feature-link">
+                    Join Community <i class="fas fa-arrow-right"></i>
+                  </a>
+                </div>
+              </div>
+            </div>
+
+            <!-- Garden Tips Section -->
+            <div class="garden-tips">
+              <div class="tip-of-day">
+                <div class="tip-icon">💡</div>
+                <div class="tip-content">
+                  <h4>🌱 Garden Tip of the Day</h4>
+                  <p>Water your plants early in the morning to reduce evaporation and prevent fungal diseases. Your plants will thank you!</p>
+                </div>
+              </div>
+            </div>
           </div>
           <!-- /.container-fluid -->
         </div>
@@ -410,6 +516,9 @@
 <script src="{{ url_for('static', filename='vendor/bootstrap/js/bootstrap.bundle.min.js') }}"></script>
 <script src="{{ url_for('static', filename='vendor/jquery-easing/jquery.easing.min.js') }}"></script>
 <script src="{{ url_for('static', filename='js/gg.min.js') }}"></script>
+
+<!-- Garden Home Page Interactions -->
+<script src="{{ url_for('static', filename='js/home-garden.js') }}"></script>
 
   </body>
 </html>
