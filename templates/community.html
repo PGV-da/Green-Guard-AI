@@ -338,36 +338,73 @@
 
           <!-- Begin Page Content -->
           <div class="container-fluid">
-            <!-- Page Heading -->
-            <h1 class="h1 mb-4 text-center text-gray-900">Chat</h1>
+            <!-- Community Chat Container -->
+            <div class="community-container">
+              
+              <!-- Chat Header -->
+              <div class="chat-header">
+                <h1><i class="fas fa-users mr-2"></i>Community Chat</h1>
+                <p class="mb-0" style="opacity: 0.9;">Connect with fellow farmers and share your experiences</p>
+              </div>
 
-        <div class="card shadow mb-4">
-            <div class="card-body">
+              <!-- Chat Messages Container -->
+              <div class="chat-messages-container">
                 <div id="messages" class="chat-messages">
+                  {% if messages %}
                     {% for message in messages %}
-                    <div class="message text-gray-900">
-                      <p><strong>{{ message['name'] }}:</strong> {{ message['message'] }}</p>
-                        {% if message[2] %}
-                        <img class="chat-image" src="data:image/png;base64,{{ message['image'] }}" alt="User Image" width="100">
+                    <div class="message-bubble">
+                      <div class="message-avatar">
+                        {{ message['name'][0].upper() }}
+                      </div>
+                      <div class="message-content">
+                        <div class="message-header">
+                          <span class="message-sender">{{ message['name'] }}</span>
+                          <span class="message-timestamp">
+                            {% if message['created_at'] %}
+                              {{ message['created_at'] }}
+                            {% else %}
+                              Just now
+                            {% endif %}
+                          </span>
+                        </div>
+                        <p class="message-text">{{ message['message'] }}</p>
+                        {% if message['image'] %}
+                          <img class="message-image" src="data:image/png;base64,{{ message['image'] }}" alt="Shared Image">
                         {% endif %}
+                      </div>
                     </div>
                     {% endfor %}
-                </div>
-            </div>
-        </div>
-
-        <div class="card shadow mb-4">
-            <div class="card-body">
-                <form action="{{ url_for('community.send_message') }}" method="post" enctype="multipart/form-data">
-                    <div class="form-group">
-                        <textarea class="form-control" name="message" placeholder="Message"></textarea>
+                  {% else %}
+                    <div class="empty-chat">
+                      <i class="fas fa-comments"></i>
+                      <h3>No messages yet</h3>
+                      <p>Be the first to start a conversation in the community!</p>
                     </div>
-                    <!-- <div class="form-group">
-                        <input type="file" name="image" class="form-control-file">
-                    </div> -->
-                    <button type="submit" class="btn btn-primary">Send</button>
-                </form>
+                  {% endif %}
+                </div>
+
+                <!-- Chat Input Container -->
+                <div class="chat-input-container">
+                  <form action="{{ url_for('community.send_message') }}" method="post" enctype="multipart/form-data" class="chat-input-form">
+                    <div class="chat-input-wrapper">
+                      <textarea 
+                        class="chat-input" 
+                        name="message" 
+                        placeholder="Type your message here..." 
+                        required
+                        rows="1"
+                        oninput="autoResize(this)"
+                      ></textarea>
+                    </div>
+                    <button type="submit" class="chat-send-btn" title="Send message">
+                      <i class="fas fa-paper-plane"></i>
+                    </button>
+                  </form>
+                </div>
+              </div>
+
             </div>
+          </div>
           <!-- /.container-fluid -->
         </div>
         <!-- End of Main Content -->
@@ -429,6 +466,162 @@
 <script src="{{ url_for('static', filename='vendor/bootstrap/js/bootstrap.bundle.min.js') }}"></script>
 <script src="{{ url_for('static', filename='vendor/jquery-easing/jquery.easing.min.js') }}"></script>
 <script src="{{ url_for('static', filename='js/gg.min.js') }}"></script>
+
+<script>
+// Auto-resize textarea with improved stability
+function autoResize(textarea) {
+    // Reset height to auto to get the real scrollHeight
+    textarea.style.height = 'auto';
+    
+    // Calculate new height based on content
+    const newHeight = Math.min(textarea.scrollHeight, 120);
+    
+    // Only update if there's a significant change to prevent layout issues
+    if (Math.abs(parseInt(textarea.style.height) - newHeight) > 2) {
+        textarea.style.height = newHeight + 'px';
+    }
+}
+
+// Scroll to bottom of chat messages with smooth animation
+function scrollToBottom() {
+    const messagesContainer = document.getElementById('messages');
+    if (messagesContainer) {
+        // Use smooth scrolling for better UX
+        messagesContainer.scrollTo({
+            top: messagesContainer.scrollHeight,
+            behavior: 'smooth'
+        });
+    }
+}
+
+// Initialize page
+document.addEventListener('DOMContentLoaded', function() {
+    // Initial scroll to bottom
+    setTimeout(scrollToBottom, 100); // Small delay to ensure content is loaded
+    
+    // Handle form submission
+    const form = document.querySelector('.chat-input-form');
+    const textarea = document.querySelector('.chat-input');
+    
+    if (form && textarea) {
+        form.addEventListener('submit', function(e) {
+            if (!textarea.value.trim()) {
+                e.preventDefault();
+                return false;
+            }
+            
+            // Clear the textarea after successful submission
+            setTimeout(() => {
+                textarea.value = '';
+                textarea.style.height = 'auto';
+            }, 100);
+        });
+        
+        // Handle Enter key for sending messages
+        textarea.addEventListener('keydown', function(e) {
+            if (e.key === 'Enter' && !e.shiftKey) {
+                e.preventDefault();
+                if (textarea.value.trim()) {
+                    form.submit();
+                }
+            }
+        });
+        
+        // Auto-resize on input with debouncing
+        let resizeTimeout;
+        textarea.addEventListener('input', function() {
+            clearTimeout(resizeTimeout);
+            resizeTimeout = setTimeout(() => {
+                autoResize(this);
+            }, 10);
+        });
+        
+        // Ensure input stays visible when focused
+        textarea.addEventListener('focus', function() {
+            setTimeout(() => {
+                // Scroll the input into view if needed
+                const inputContainer = this.closest('.chat-input-container');
+                if (inputContainer) {
+                    inputContainer.scrollIntoView({ 
+                        behavior: 'smooth', 
+                        block: 'nearest',
+                        inline: 'nearest'
+                    });
+                }
+            }, 100);
+        });
+        
+        // Prevent form submission when textarea is empty
+        textarea.addEventListener('blur', function() {
+            if (!this.value.trim()) {
+                this.style.height = 'auto';
+            }
+        });
+    }
+    
+    // Auto-scroll to bottom when new content is detected
+    const observer = new MutationObserver(function(mutations) {
+        mutations.forEach(function(mutation) {
+            if (mutation.type === 'childList' && mutation.addedNodes.length > 0) {
+                // Check if new message bubbles were added
+                const addedMessages = Array.from(mutation.addedNodes).some(node => 
+                    node.nodeType === 1 && (
+                        node.classList?.contains('message-bubble') ||
+                        node.querySelector?.('.message-bubble')
+                    )
+                );
+                
+                if (addedMessages) {
+                    setTimeout(scrollToBottom, 50);
+                }
+            }
+        });
+    });
+    
+    // Observe the messages container for new messages
+    const messagesContainer = document.getElementById('messages');
+    if (messagesContainer) {
+        observer.observe(messagesContainer, {
+            childList: true,
+            subtree: true
+        });
+    }
+});
+
+// Auto-refresh messages every 30 seconds with improved logic
+setInterval(function() {
+    // Only refresh if the page is visible to avoid unnecessary requests
+    if (!document.hidden) {
+        const textarea = document.querySelector('.chat-input');
+        
+        // Don't reload if user is actively typing
+        if (textarea && textarea.value.trim()) {
+            return;
+        }
+        
+        // Don't reload if user is focused on the input
+        if (document.activeElement === textarea) {
+            return;
+        }
+        
+        // Store scroll position before reload
+        const messagesContainer = document.getElementById('messages');
+        const wasAtBottom = messagesContainer ? 
+            (messagesContainer.scrollTop + messagesContainer.clientHeight >= messagesContainer.scrollHeight - 10) : 
+            true;
+        
+        // Only auto-refresh if user was at the bottom (viewing latest messages)
+        if (wasAtBottom) {
+            location.reload();
+        }
+    }
+}, 30000);
+
+// Handle window resize to maintain proper layout
+window.addEventListener('resize', function() {
+    setTimeout(scrollToBottom, 100);
+});
+</script>
 
   </body>
 </html>

@@ -28,8 +28,16 @@ def create_tables():
                         user_id INTEGER,
                         message TEXT NOT NULL,
                         image BLOB,
+                        created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
                         FOREIGN KEY(user_id) REFERENCES users(id)
                     )''')
+    
+    # Add created_at column if it doesn't exist (for existing databases)
+    try:
+        cursor.execute('ALTER TABLE messages ADD COLUMN created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP')
+    except sqlite3.OperationalError:
+        # Column already exists
+        pass
 
     conn.commit()
     conn.close()
