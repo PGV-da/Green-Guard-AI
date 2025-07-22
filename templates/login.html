@@ -14,7 +14,7 @@
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link
-      href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300..700&display=swap"
+      href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap"
       rel="stylesheet"
     />
 
@@ -23,9 +23,44 @@
       href="{{ url_for('static', filename='css/gg.css') }}"
       rel="stylesheet"
     />
+    <!-- Garden Theme CSS -->
+    <link
+      href="{{ url_for('static', filename='css/garden-theme.css') }}"
+      rel="stylesheet"
+    />
   </head>
 
   <body class="bg-theme">
+    <!-- Floating Leaves Animation -->
+    <div class="floating-leaves">
+      <div class="leaf"></div>
+      <div class="leaf"></div>
+      <div class="leaf"></div>
+      <div class="leaf"></div>
+      <div class="leaf"></div>
+      <div class="leaf"></div>
+      <div class="leaf"></div>
+      <div class="leaf"></div>
+      <div class="leaf"></div>
+    </div>
+    
+    <!-- Falling Petals -->
+    <div class="petal-container">
+      <div class="petal"></div>
+      <div class="petal"></div>
+      <div class="petal"></div>
+      <div class="petal"></div>
+      <div class="petal"></div>
+      <div class="petal"></div>
+      <div class="petal"></div>
+      <div class="petal"></div>
+      <div class="petal"></div>
+      <div class="petal"></div>
+    </div>
+    
+    <!-- Butterfly -->
+    <div class="butterfly">🦋</div>
+    
     <div class="container">
       {% with messages = get_flashed_messages(with_categories=true) %} {% if
       messages %} {% for category, message in messages %}
@@ -147,5 +182,8 @@
 
     <!-- Custom scripts for all pages-->
     <script src="static/js/gg.min.js"></script>
+    
+    <!-- Garden Theme JavaScript-->
+    <script src="static/js/garden-theme.js"></script>
   </body>
 </html>

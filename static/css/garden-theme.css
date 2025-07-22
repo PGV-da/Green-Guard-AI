@@ -1,0 +1,797 @@
+/* Garden Theme CSS for Green Guardian AI */
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap');
+
+:root {
+  /* Garden Color Palette */
+  --garden-primary: #3A7D44;
+  --garden-secondary: #A3D9A5;
+  --garden-sky: #C2F0FF;
+  --garden-soil: #6B4226;
+  --garden-cream: #F5F5F5;
+  --garden-white: #FFFFFF;
+  --garden-shadow: rgba(58, 125, 68, 0.15);
+  --garden-glow: rgba(163, 217, 165, 0.4);
+  --garden-dark: #2A5D32;
+  --garden-light-green: rgba(163, 217, 165, 0.1);
+}
+
+/* Global Styles */
+* {
+  box-sizing: border-box;
+}
+
+body.bg-theme {
+  font-family: 'Poppins', sans-serif !important;
+  margin: 0;
+  padding: 0;
+  min-height: 100vh;
+  background: linear-gradient(135deg, var(--garden-sky) 0%, var(--garden-secondary) 50%, var(--garden-primary) 100%);
+  position: relative;
+  overflow-x: hidden;
+}
+
+/* Animated Background Elements */
+body.bg-theme::before {
+  content: '';
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: 
+    url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Cpath d='M20,50 Q30,30 40,50 T60,50' stroke='%23A3D9A5' stroke-width='0.5' fill='none' opacity='0.3'/%3E%3Cpath d='M10,70 Q20,50 30,70 T50,70' stroke='%233A7D44' stroke-width='0.3' fill='none' opacity='0.2'/%3E%3C/svg%3E"),
+    radial-gradient(circle at 20% 80%, rgba(163, 217, 165, 0.1) 0%, transparent 50%),
+    radial-gradient(circle at 80% 20%, rgba(58, 125, 68, 0.1) 0%, transparent 50%);
+  background-size: 200px 200px, 300px 300px, 400px 400px;
+  animation: floatingPattern 20s ease-in-out infinite;
+  z-index: -1;
+  pointer-events: none;
+}
+
+@keyframes floatingPattern {
+  0%, 100% { transform: translateX(0) translateY(0) rotate(0deg); }
+  25% { transform: translateX(10px) translateY(-10px) rotate(1deg); }
+  50% { transform: translateX(-5px) translateY(5px) rotate(-0.5deg); }
+  75% { transform: translateX(5px) translateY(-5px) rotate(0.5deg); }
+}
+
+/* Floating Leaves Animation */
+.floating-leaves {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+  z-index: 1;
+  overflow: hidden;
+}
+
+.leaf {
+  position: absolute;
+  width: 20px;
+  height: 20px;
+  background: var(--garden-secondary);
+  border-radius: 0 100% 0 100%;
+  transform: rotate(45deg);
+  opacity: 0.6;
+  animation: float 15s infinite linear;
+}
+
+.leaf:nth-child(1) { left: 10%; animation-delay: 0s; animation-duration: 12s; }
+.leaf:nth-child(2) { left: 20%; animation-delay: 2s; animation-duration: 15s; }
+.leaf:nth-child(3) { left: 30%; animation-delay: 4s; animation-duration: 18s; }
+.leaf:nth-child(4) { left: 40%; animation-delay: 6s; animation-duration: 14s; }
+.leaf:nth-child(5) { left: 50%; animation-delay: 8s; animation-duration: 16s; }
+.leaf:nth-child(6) { left: 60%; animation-delay: 10s; animation-duration: 13s; }
+.leaf:nth-child(7) { left: 70%; animation-delay: 12s; animation-duration: 17s; }
+.leaf:nth-child(8) { left: 80%; animation-delay: 14s; animation-duration: 11s; }
+.leaf:nth-child(9) { left: 90%; animation-delay: 16s; animation-duration: 19s; }
+
+@keyframes float {
+  0% { 
+    transform: translateY(-100px) rotate(0deg);
+    opacity: 0;
+  }
+  10% { opacity: 0.6; }
+  90% { opacity: 0.6; }
+  100% { 
+    transform: translateY(calc(100vh + 100px)) rotate(360deg);
+    opacity: 0;
+  }
+}
+
+/* Container Styles */
+.container {
+  position: relative;
+  z-index: 2;
+  padding: 20px;
+}
+
+/* Card Styles with Glassmorphism */
+.card {
+  background: rgba(255, 255, 255, 0.25) !important;
+  backdrop-filter: blur(20px) !important;
+  border: 1px solid rgba(255, 255, 255, 0.3) !important;
+  border-radius: 25px !important;
+  box-shadow: 
+    0 25px 50px rgba(58, 125, 68, 0.15),
+    inset 0 1px 0 rgba(255, 255, 255, 0.3) !important;
+  overflow: hidden;
+  transition: all 0.4s cubic-bezier(0.23, 1, 0.320, 1);
+  position: relative;
+}
+
+.card::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 2px;
+  background: linear-gradient(90deg, var(--garden-primary), var(--garden-secondary), var(--garden-primary));
+  opacity: 0.7;
+}
+
+.card:hover {
+  transform: translateY(-10px);
+  box-shadow: 
+    0 35px 70px rgba(58, 125, 68, 0.2),
+    inset 0 1px 0 rgba(255, 255, 255, 0.4);
+}
+
+/* Card Body */
+.card-body {
+  background: transparent !important;
+  position: relative;
+}
+
+/* Login Image Container */
+.col-lg-5 {
+  position: relative;
+  overflow: hidden;
+  border-radius: 25px 0 0 25px;
+}
+
+.col-lg-5 img {
+  border-radius: 25px 0 0 25px !important;
+  transition: transform 0.6s ease;
+  filter: sepia(20%) saturate(120%) hue-rotate(90deg);
+}
+
+.col-lg-5:hover img {
+  transform: scale(1.05);
+}
+
+/* Login Form Container */
+.col-lg-6 {
+  padding: 0 !important;
+}
+
+.p-5 {
+  padding: 3rem !important;
+  position: relative;
+}
+
+/* Header Styles */
+.text-center h1 {
+  color: var(--garden-primary) !important;
+  font-weight: 600 !important;
+  text-shadow: 0 2px 4px rgba(58, 125, 68, 0.1);
+  margin-bottom: 1.5rem !important;
+  position: relative;
+}
+
+.text-center h1:first-child {
+  font-size: 1.8rem !important;
+  background: linear-gradient(135deg, var(--garden-primary), var(--garden-secondary));
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  animation: fadeInUp 0.8s ease-out;
+}
+
+.text-center h1:last-child {
+  font-size: 1.4rem !important;
+  color: var(--garden-dark) !important;
+  font-weight: 500 !important;
+  animation: fadeInUp 0.8s ease-out 0.2s both;
+}
+
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(30px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* Form Styles */
+form.user {
+  animation: fadeInUp 0.8s ease-out 0.4s both;
+}
+
+/* Input Styles */
+.form-control-user {
+  background: rgba(255, 255, 255, 0.9) !important;
+  border: 2px solid transparent !important;
+  border-radius: 50px !important;
+  padding: 1.2rem 1.5rem !important;
+  font-size: 0.95rem !important;
+  color: var(--garden-dark) !important;
+  transition: all 0.3s cubic-bezier(0.23, 1, 0.320, 1) !important;
+  position: relative;
+  box-shadow: 0 4px 15px rgba(58, 125, 68, 0.08);
+}
+
+.form-control-user::placeholder {
+  color: rgba(58, 125, 68, 0.6) !important;
+  font-weight: 400;
+}
+
+.form-control-user:focus {
+  background: rgba(255, 255, 255, 0.95) !important;
+  border-color: var(--garden-secondary) !important;
+  box-shadow: 
+    0 0 0 3px var(--garden-glow),
+    0 8px 25px rgba(58, 125, 68, 0.15) !important;
+  transform: translateY(-2px);
+  outline: none !important;
+}
+
+/* Vine Animation on Focus */
+.form-group {
+  position: relative;
+  margin-bottom: 2rem !important;
+}
+
+.form-group::after {
+  content: '🌿';
+  position: absolute;
+  right: 15px;
+  top: 50%;
+  transform: translateY(-50%) scale(0);
+  transition: all 0.3s ease;
+  opacity: 0;
+  font-size: 1.2rem;
+}
+
+.form-group:focus-within::after {
+  transform: translateY(-50%) scale(1);
+  opacity: 1;
+}
+
+/* Button Styles */
+.btn-user {
+  background: linear-gradient(135deg, var(--garden-primary), var(--garden-secondary)) !important;
+  border: none !important;
+  border-radius: 50px !important;
+  padding: 1rem 2rem !important;
+  font-size: 1rem !important;
+  font-weight: 600 !important;
+  color: white !important;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  transition: all 0.3s cubic-bezier(0.23, 1, 0.320, 1) !important;
+  position: relative;
+  overflow: hidden;
+  box-shadow: 0 8px 25px rgba(58, 125, 68, 0.3);
+}
+
+.btn-user::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: -100%;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
+  transition: left 0.5s ease;
+}
+
+.btn-user:hover {
+  transform: translateY(-3px) scale(1.02) !important;
+  box-shadow: 0 15px 35px rgba(58, 125, 68, 0.4) !important;
+  background: linear-gradient(135deg, var(--garden-dark), var(--garden-primary)) !important;
+}
+
+.btn-user:hover::before {
+  left: 100%;
+}
+
+.btn-user:active {
+  transform: translateY(-1px) scale(1.01) !important;
+}
+
+/* Custom Checkbox Styles */
+.custom-control {
+  position: relative;
+  display: block;
+  min-height: 1.5rem;
+  padding-left: 2.5rem;
+  margin-bottom: 1rem;
+}
+
+.custom-control-input {
+  position: absolute;
+  left: 0;
+  z-index: -1;
+  width: 1.5rem;
+  height: 1.5rem;
+  opacity: 0;
+}
+
+.custom-control-label {
+  position: relative;
+  margin-bottom: 0;
+  color: var(--garden-dark) !important;
+  font-weight: 500;
+  cursor: pointer;
+}
+
+.custom-control-label::before {
+  position: absolute;
+  top: 0.125rem;
+  left: -2.5rem;
+  display: block;
+  width: 1.25rem;
+  height: 1.25rem;
+  pointer-events: none;
+  content: "";
+  background: rgba(255, 255, 255, 0.9);
+  border: 2px solid var(--garden-secondary);
+  border-radius: 50%;
+  transition: all 0.3s ease;
+}
+
+.custom-control-label::after {
+  position: absolute;
+  top: 0.125rem;
+  left: -2.5rem;
+  display: block;
+  width: 1.25rem;
+  height: 1.25rem;
+  content: "";
+  background: no-repeat 50% / 50% 50%;
+  transition: all 0.3s ease;
+  border-radius: 50%;
+}
+
+/* Sprouting Seed Animation */
+.custom-control-input:checked ~ .custom-control-label::before {
+  background: linear-gradient(135deg, var(--garden-primary), var(--garden-secondary));
+  border-color: var(--garden-primary);
+  transform: scale(1.1);
+  animation: sprout 0.6s ease-out;
+}
+
+.custom-control-input:checked ~ .custom-control-label::after {
+  content: "🌱";
+  font-size: 0.8rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  animation: sproutGrow 0.8s ease-out 0.2s both;
+}
+
+@keyframes sprout {
+  0% { transform: scale(1); }
+  50% { transform: scale(1.2) rotate(5deg); }
+  100% { transform: scale(1.1); }
+}
+
+@keyframes sproutGrow {
+  0% { transform: scale(0) rotate(-180deg); opacity: 0; }
+  50% { transform: scale(1.2) rotate(-90deg); opacity: 0.7; }
+  100% { transform: scale(1) rotate(0deg); opacity: 1; }
+}
+
+/* Links */
+.small {
+  color: var(--garden-primary) !important;
+  font-weight: 500;
+  text-decoration: none;
+  transition: all 0.3s ease;
+  position: relative;
+}
+
+.small:hover {
+  color: var(--garden-dark) !important;
+  text-decoration: none;
+}
+
+.small::after {
+  content: '';
+  position: absolute;
+  bottom: -2px;
+  left: 0;
+  width: 0;
+  height: 2px;
+  background: linear-gradient(90deg, var(--garden-primary), var(--garden-secondary));
+  transition: width 0.3s ease;
+}
+
+.small:hover::after {
+  width: 100%;
+}
+
+/* Divider Styles */
+hr {
+  border: none;
+  height: 1px;
+  background: linear-gradient(90deg, transparent, var(--garden-secondary), transparent);
+  margin: 2rem 0;
+  position: relative;
+}
+
+hr::after {
+  content: '🌸';
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  background: rgba(255, 255, 255, 0.9);
+  padding: 0 10px;
+  font-size: 1rem;
+}
+
+/* Alert Styles */
+.alert {
+  border-radius: 15px !important;
+  border: none !important;
+  background: rgba(232, 62, 140, 0.1) !important;
+  backdrop-filter: blur(10px);
+  color: var(--garden-dark) !important;
+  animation: slideInDown 0.5s ease-out;
+}
+
+@keyframes slideInDown {
+  from {
+    opacity: 0;
+    transform: translateY(-30px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* Decorative Elements */
+.p-5::before {
+  content: '';
+  position: absolute;
+  top: 20px;
+  right: 20px;
+  width: 40px;
+  height: 40px;
+  background: url('../images/watering-can.svg') no-repeat center;
+  background-size: contain;
+  opacity: 0.3;
+  animation: bounce 2s ease-in-out infinite;
+}
+
+.p-5::after {
+  content: '';
+  position: absolute;
+  bottom: 20px;
+  left: 20px;
+  width: 60px;
+  height: 30px;
+  background: url('../images/vine-decoration.svg') no-repeat center;
+  background-size: contain;
+  opacity: 0.3;
+  animation: sway 3s ease-in-out infinite;
+}
+
+@keyframes bounce {
+  0%, 20%, 50%, 80%, 100% { transform: translateY(0); }
+  40% { transform: translateY(-10px); }
+  60% { transform: translateY(-5px); }
+}
+
+@keyframes sway {
+  0%, 100% { transform: rotate(0deg); }
+  25% { transform: rotate(5deg); }
+  75% { transform: rotate(-5deg); }
+}
+
+/* Responsive Design */
+@media (max-width: 992px) {
+  .col-lg-5 {
+    display: none;
+  }
+  
+  .col-lg-6 {
+    width: 100%;
+  }
+  
+  .card {
+    margin: 10px;
+  }
+  
+  .p-5 {
+    padding: 2rem !important;
+  }
+}
+
+@media (max-width: 576px) {
+  .container {
+    padding: 10px;
+  }
+  
+  .card {
+    border-radius: 15px !important;
+  }
+  
+  .p-5 {
+    padding: 1.5rem !important;
+  }
+  
+  .text-center h1:first-child {
+    font-size: 1.5rem !important;
+  }
+  
+  .text-center h1:last-child {
+    font-size: 1.2rem !important;
+  }
+}
+
+/* Loading Animation */
+@keyframes shimmer {
+  0% { background-position: -1000px 0; }
+  100% { background-position: 1000px 0; }
+}
+
+.loading {
+  background: linear-gradient(90deg, 
+    rgba(255, 255, 255, 0.1) 25%, 
+    rgba(255, 255, 255, 0.3) 50%, 
+    rgba(255, 255, 255, 0.1) 75%);
+  background-size: 1000px 100%;
+  animation: shimmer 2s infinite;
+}
+
+/* Garden Breeze Animation */
+@keyframes gardenBreeze {
+  0%, 100% { transform: translateX(0) translateY(0) rotate(0deg); }
+  25% { transform: translateX(5px) translateY(-3px) rotate(1deg); }
+  50% { transform: translateX(-3px) translateY(2px) rotate(-0.5deg); }
+  75% { transform: translateX(2px) translateY(-1px) rotate(0.5deg); }
+}
+
+.card {
+  animation: gardenBreeze 8s ease-in-out infinite;
+}
+
+/* Garden Signpost Style (for register page link) */
+.garden-signpost {
+  position: relative;
+  display: inline-block;
+  color: var(--garden-primary) !important;
+  font-weight: 600 !important;
+  text-decoration: none !important;
+  padding: 10px 20px;
+  background: linear-gradient(135deg, rgba(163, 217, 165, 0.2), rgba(255, 255, 255, 0.3));
+  border-radius: 15px;
+  border: 2px solid var(--garden-secondary);
+  transition: all 0.4s cubic-bezier(0.23, 1, 0.320, 1);
+  margin: 10px 0;
+  box-shadow: 0 4px 15px rgba(58, 125, 68, 0.15);
+}
+
+.garden-signpost:hover {
+  color: var(--garden-white) !important;
+  background: linear-gradient(135deg, var(--garden-primary), var(--garden-secondary));
+  transform: translateY(-3px) scale(1.05);
+  box-shadow: 0 8px 25px rgba(58, 125, 68, 0.3);
+  text-decoration: none !important;
+}
+
+.garden-signpost::before {
+  content: '';
+  position: absolute;
+  top: -8px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 0;
+  height: 0;
+  border-left: 8px solid transparent;
+  border-right: 8px solid transparent;
+  border-bottom: 8px solid var(--garden-secondary);
+  transition: all 0.4s ease;
+}
+
+.garden-signpost:hover::before {
+  border-bottom-color: var(--garden-primary);
+}
+
+/* Register page specific input styling */
+.form-group.row .form-control-user {
+  position: relative;
+}
+
+/* Enhanced placeholder styling with icons */
+.form-control-user::placeholder {
+  color: rgba(58, 125, 68, 0.7) !important;
+  font-weight: 500;
+}
+
+/* Specific animations for register form */
+.form-group.row {
+  animation: fadeInUp 0.8s ease-out calc(var(--animation-delay, 0) * 0.1s) both;
+}
+
+.form-group.row:nth-child(1) { --animation-delay: 1; }
+.form-group.row:nth-child(2) { --animation-delay: 2; }
+.form-group:nth-child(3) { --animation-delay: 3; }
+.form-group:nth-child(4) { --animation-delay: 4; }
+.form-group.row:nth-child(5) { --animation-delay: 5; }
+
+/* Enhanced button text for register */
+.btn-user {
+  font-size: 1rem !important;
+  letter-spacing: 0.8px;
+  text-shadow: 0 1px 2px rgba(0, 0, 0, 0.1);
+}
+
+/* Input validation styling */
+.form-control-user:valid {
+  border-color: var(--garden-secondary) !important;
+  box-shadow: 0 0 0 2px rgba(163, 217, 165, 0.2) !important;
+}
+
+.form-control-user:invalid:not(:placeholder-shown) {
+  border-color: #ff6b6b !important;
+  box-shadow: 0 0 0 2px rgba(255, 107, 107, 0.2) !important;
+}
+
+/* Success indicator for filled inputs */
+.form-control-user:valid::after {
+  content: '✓';
+  position: absolute;
+  right: 15px;
+  top: 50%;
+  transform: translateY(-50%);
+  color: var(--garden-primary);
+  font-weight: bold;
+  font-size: 1.2rem;
+}
+
+/* Register page specific decorations */
+body:has(input[name="first_name"]) .p-5::before {
+  content: '';
+  position: absolute;
+  top: 15px;
+  right: 15px;
+  width: 50px;
+  height: 50px;
+  background: url('../images/growing-plant.svg') no-repeat center;
+  background-size: contain;
+  opacity: 0.4;
+  animation: bounce 3s ease-in-out infinite;
+}
+
+body:has(input[name="first_name"]) .p-5::after {
+  content: '';
+  position: absolute;
+  bottom: 15px;
+  left: 15px;
+  width: 70px;
+  height: 35px;
+  background: url('../images/vine-decoration.svg') no-repeat center;
+  background-size: contain;
+  opacity: 0.4;
+  animation: sway 4s ease-in-out infinite;
+}
+
+/* Fallback for browsers that don't support :has() */
+.register-page .p-5::before {
+  content: '';
+  position: absolute;
+  top: 15px;
+  right: 15px;
+  width: 50px;
+  height: 50px;
+  background: url('../images/growing-plant.svg') no-repeat center;
+  background-size: contain;
+  opacity: 0.4;
+  animation: bounce 3s ease-in-out infinite;
+}
+
+.register-page .p-5::after {
+  content: '';
+  position: absolute;
+  bottom: 15px;
+  left: 15px;
+  width: 70px;
+  height: 35px;
+  background: url('../images/vine-decoration.svg') no-repeat center;
+  background-size: contain;
+  opacity: 0.4;
+  animation: sway 4s ease-in-out infinite;
+}
+
+/* Petal Fall Animation */
+.petal-container {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+  z-index: 1;
+  overflow: hidden;
+}
+
+.petal {
+  position: absolute;
+  width: 8px;
+  height: 8px;
+  background: #FFB6C1;
+  border-radius: 50% 0 50% 0;
+  animation: petalFall 12s infinite linear;
+  opacity: 0.7;
+}
+
+.petal:nth-child(odd) {
+  background: #FFC0CB;
+  animation-duration: 15s;
+}
+
+.petal:nth-child(1) { left: 5%; animation-delay: 0s; }
+.petal:nth-child(2) { left: 15%; animation-delay: 2s; }
+.petal:nth-child(3) { left: 25%; animation-delay: 4s; }
+.petal:nth-child(4) { left: 35%; animation-delay: 6s; }
+.petal:nth-child(5) { left: 45%; animation-delay: 8s; }
+.petal:nth-child(6) { left: 55%; animation-delay: 10s; }
+.petal:nth-child(7) { left: 65%; animation-delay: 12s; }
+.petal:nth-child(8) { left: 75%; animation-delay: 14s; }
+.petal:nth-child(9) { left: 85%; animation-delay: 16s; }
+.petal:nth-child(10) { left: 95%; animation-delay: 18s; }
+
+@keyframes petalFall {
+  0% { 
+    transform: translateY(-100px) rotate(0deg);
+    opacity: 0;
+  }
+  10% { opacity: 0.7; }
+  90% { opacity: 0.7; }
+  100% { 
+    transform: translateY(calc(100vh + 100px)) rotate(720deg);
+    opacity: 0;
+  }
+}
+
+/* Butterfly Animation */
+.butterfly {
+  position: fixed;
+  font-size: 20px;
+  animation: butterflyFly 20s infinite ease-in-out;
+  z-index: 2;
+  pointer-events: none;
+}
+
+@keyframes butterflyFly {
+  0% { 
+    transform: translate(-50px, 80vh) rotate(0deg);
+    opacity: 0;
+  }
+  5% { opacity: 0.8; }
+  25% { 
+    transform: translate(30vw, 40vh) rotate(45deg);
+  }
+  50% { 
+    transform: translate(70vw, 60vh) rotate(-30deg);
+  }
+  75% { 
+    transform: translate(40vw, 20vh) rotate(60deg);
+  }
+  95% { opacity: 0.8; }
+  100% { 
+    transform: translate(120vw, 90vh) rotate(0deg);
+    opacity: 0;
+  }
+}
