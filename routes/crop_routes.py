@@ -28,6 +28,17 @@ def crop_recommendation():
 @require_login
 def predict():
     """Handles the crop prediction form and displays results."""
+    # Get form data to pass back to template
+    form_data = {
+        'nitrogen': request.form.get('Nitrogen', ''),
+        'phosphorus': request.form.get('Phosporus', ''),
+        'potassium': request.form.get('Potassium', ''),
+        'temperature': request.form.get('Temperature', ''),
+        'humidity': request.form.get('Humidity', ''),
+        'ph': request.form.get('pH', ''),
+        'rainfall': request.form.get('Rainfall', '')
+    }
+    
     try:
         # Get input values
         N = float(request.form['Nitrogen'])
@@ -54,5 +65,5 @@ def predict():
     except Exception as e:
         result = f"Error: {str(e)}"
 
-    return render_template('crop-prediction.html', result=result)
+    return render_template('crop-prediction.html', result=result, form_data=form_data)
     
