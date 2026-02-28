@@ -2,8 +2,8 @@
 import concurrent.futures
 
 from flask import Blueprint, jsonify, render_template, request
-from langchain.chains.combine_documents import create_stuff_documents_chain
-from langchain.chains.retrieval import create_retrieval_chain
+from langchain_classic.chains.combine_documents.stuff import create_stuff_documents_chain
+from langchain_classic.chains.retrieval import create_retrieval_chain
 from langchain_core.prompts import ChatPromptTemplate
 
 from utils.authentication import require_login

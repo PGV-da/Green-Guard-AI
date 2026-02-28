@@ -19,7 +19,8 @@ def news():
     for article in soup.find_all('div', class_='uwU81')[:10]:
         title = article.find('div', class_='fHv_i').text.strip()
         news_url = article.find('a')['href']
-        content = news_content(news_url)
+        content = article.find('p', class_='oxXSK').text.strip().split('\n')[0] if '\n' in article.find('p', class_='oxXSK').text.strip() else article.find('p', class_='oxXSK').text.strip()
+        # content = news_content(news_url)
         news_articles.append({'title': title, 'url': news_url, 'content': content})
 
     return render_template('news.html', news_articles=news_articles)
